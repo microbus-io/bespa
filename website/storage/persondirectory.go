@@ -17,7 +17,6 @@ limitations under the License.
 package storage
 
 import (
-	"errors"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -26,6 +25,7 @@ import (
 	"time"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 // MaxDirectoryRecords is the maximum number of persons allowed in the directory.
@@ -129,7 +129,7 @@ func (ds *PersonDirectory) List() []*Person {
 // Update updates the data of a person in the directory.
 func (ds *PersonDirectory) Update(person *Person) (err error) {
 	if err := person.validate(); err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	ds.Lock()
 	defer ds.Unlock()
@@ -152,7 +152,7 @@ func (ds *PersonDirectory) Update(person *Person) (err error) {
 // If a person with the same email address already exists, a new record is not created.
 func (ds *PersonDirectory) Insert(person *Person) (id string, err error) {
 	if err := person.validate(); err != nil {
-		return "", err
+		return "", errors.Trace(err)
 	}
 	ds.Lock()
 	defer ds.Unlock()

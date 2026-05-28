@@ -17,12 +17,12 @@ limitations under the License.
 package table
 
 import (
-	"errors"
 	"io"
 	"net/http"
 	"strings"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&RowWidget{}) // Ensure interface

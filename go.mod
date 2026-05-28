@@ -15,4 +15,5 @@ require (
 require (
 	github.com/dlclark/regexp2 v1.12.0 // indirect
 	github.com/microbus-io/copyrighter v1.4.0 // indirect
+	github.com/microbus-io/errors v1.0.1 // indirect
 )

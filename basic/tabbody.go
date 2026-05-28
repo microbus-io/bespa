@@ -17,11 +17,11 @@ limitations under the License.
 package basic
 
 import (
-	"errors"
 	"io"
 	"net/http"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&TabBodyWidget{}) // Ensure interface

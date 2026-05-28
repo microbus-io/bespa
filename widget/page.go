@@ -31,6 +31,7 @@ import (
 	"strings"
 
 	"github.com/microbus-io/bespa/css"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&PageWidget{}) // Ensure interface
@@ -167,7 +168,7 @@ func (wgt *PageWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	var stats traversalStats
 	err = wgt.traverse(wgt, r, !redraw, true, &stats)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	// Set the initial values of input widgets into the state
 	for n, v := range stats.Inputs {
@@ -179,7 +180,7 @@ func (wgt *PageWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	// Serialize state
 	stateJson, err := json.Marshal(state)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 
 	if redraw {
@@ -192,13 +193,13 @@ func (wgt *PageWidget) Draw(w io.Writer, r *http.Request) (err error) {
 			wrt.WriteString(" -->")
 			err = widget.Draw(w, r)
 			if err != nil {
-				return err
+				return errors.Trace(err)
 			}
 		}
 		wrt.WriteString("\n<!-- State -->")
 		err = factory.Tag("div").Class("State").Add(stateJson).Draw(wrt, r)
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 		wrt.WriteString("</body></html>\n")
 		return wrt.Err()
@@ -231,7 +232,7 @@ func (wgt *PageWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	if wgt.nav != nil {
 		err = factory.Tag("nav").Class("TopNav").Add(wgt.nav).Draw(wrt, r)
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 
@@ -262,7 +263,7 @@ func (wgt *PageWidget) Draw(w io.Writer, r *http.Request) (err error) {
 		).
 		Draw(wrt, r)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 
 	wrt.WriteString("</body></html>\n")
@@ -335,7 +336,7 @@ func (wgt *PageWidget) traverse(w Widget, r *http.Request, drawing bool, shown b
 		// Recurse
 		err := wgt.traverse(child, r, drawing, shown, stats)
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	return nil

@@ -21,6 +21,8 @@ import (
 	"io"
 	"strconv"
 	"strings"
+
+	"github.com/microbus-io/errors"
 )
 
 // https://m3.material.io/theme-builder#/dynamic
@@ -324,7 +326,7 @@ func (kc KeyColors) WriteCSSThemes(w io.Writer) error {
 		rule := fmt.Sprintf("\t--%s: var(--%s);\n", tokens[i+1], tokens[i+2])
 		_, err := w.Write([]byte(rule))
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	w.Write([]byte("}\n"))
@@ -334,7 +336,7 @@ func (kc KeyColors) WriteCSSThemes(w io.Writer) error {
 		rule := fmt.Sprintf("\t--%s: var(--%s);\n", tokens[i+1], tokens[i+2])
 		_, err := w.Write([]byte(rule))
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	w.Write([]byte("}\n\n"))
@@ -346,7 +348,7 @@ func (kc KeyColors) WriteCSSThemes(w io.Writer) error {
 		rule := fmt.Sprintf("\t--%s: var(--%s);\n", tokens[i+1], tokens[i+3])
 		_, err := w.Write([]byte(rule))
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	w.Write([]byte("}\n"))
@@ -356,7 +358,7 @@ func (kc KeyColors) WriteCSSThemes(w io.Writer) error {
 		rule := fmt.Sprintf("\t--%s: var(--%s);\n", tokens[i+1], tokens[i+3])
 		_, err := w.Write([]byte(rule))
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	w.Write([]byte("}\n\n"))
@@ -376,7 +378,7 @@ func (kc KeyColors) writeTones(w io.Writer, color Color, name string) error {
 		rule := fmt.Sprintf("\t--%s%d: %d,%d,%d;\n", name, tone, r, g, b)
 		_, err := w.Write([]byte(rule))
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	return nil

@@ -22,6 +22,7 @@ import (
 	"strconv"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&RatingWidget{}) // Ensure interface
@@ -119,7 +120,7 @@ func (wgt *RatingWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	invalid := !wgt.Valid(r)
 	valueInt, err := strconv.Atoi(value)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	if value == "0" {
 		value = ""

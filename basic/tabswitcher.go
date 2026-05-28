@@ -21,6 +21,7 @@ import (
 	"net/http"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&TabSwitcherWidget{}) // Ensure interface
@@ -143,7 +144,7 @@ func (wgt *TabSwitcherWidget) Draw(w io.Writer, r *http.Request) (err error) {
 		).
 		When(wgt.Shown(r) && len(wgt.labels)+len(wgt.bodies) > 0).
 		Draw(w, r)
-	return err
+	return errors.Trace(err)
 }
 
 // currentTabKey returns the currently selected tab key.

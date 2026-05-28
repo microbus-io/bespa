@@ -18,7 +18,6 @@ package richedit
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -29,6 +28,7 @@ import (
 
 	"github.com/microbus-io/bespa/form"
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&InputRichTextWidget{})      // Ensure interface
@@ -322,7 +322,7 @@ func (wgt *InputRichTextWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	}
 	optsJSON, err := json.Marshal(opts)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 
 	scriptTag := Tag("script").Add(factory.HTMLUnsafe(

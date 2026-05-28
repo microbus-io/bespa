@@ -21,6 +21,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/microbus-io/errors"
 	"golang.org/x/net/html"
 )
 
@@ -59,7 +60,7 @@ func SafeHTML(unsafeHTML string) (safeHTML string, err error) {
 	// Parse
 	root, err := html.Parse(strings.NewReader(unsafeHTML))
 	if err != nil {
-		return "", err
+		return "", errors.Trace(err)
 	}
 	// Eliminate scripts
 	var removeScripts func(x *html.Node)
@@ -87,7 +88,7 @@ func SafeHTML(unsafeHTML string) (safeHTML string, err error) {
 	var sb strings.Builder
 	err = html.Render(&sb, root)
 	if err != nil {
-		return "", err
+		return "", errors.Trace(err)
 	}
 	rendered := sb.String()
 	rendered = strings.TrimPrefix(rendered, "<html><head></head><body>")

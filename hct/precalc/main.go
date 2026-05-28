@@ -22,6 +22,7 @@ import (
 	"os"
 
 	"github.com/microbus-io/bespa/hct"
+	"github.com/microbus-io/errors"
 )
 
 // main precalculates the HCT tonal map at the 10,20,30,40,50,60,70,80,90,95 and 99 levels
@@ -42,7 +43,7 @@ func mainErr() error {
 
 	f, err := os.Create("../../css/tonalmap.bin")
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	buf := bufio.NewWriter(f)
 	defer f.Close()

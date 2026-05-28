@@ -27,6 +27,7 @@ import (
 
 	"github.com/andybalholm/brotli"
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&EmbedWidget{}) // Ensure interface
@@ -65,11 +66,11 @@ func (f BasicFactory) EmbedHandler(handler http.HandlerFunc, original *http.Requ
 			rec := httptest.NewRecorder()
 			u, err := original.URL.Parse(url)
 			if err != nil {
-				return nil, err
+				return nil, errors.Trace(err)
 			}
 			r, err := http.NewRequest(method, u.String(), body)
 			if err != nil {
-				return nil, err
+				return nil, errors.Trace(err)
 			}
 			r = r.WithContext(original.Context())
 			for k, v := range original.Header {
@@ -100,12 +101,12 @@ func (wgt *EmbedWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	if wgt.Shown(r) && wgt.webHandler != nil {
 		res, err := wgt.webHandler()
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 		if res != nil && res.Body != nil {
 			body, err = readDecoded(res)
 			if err != nil {
-				return err
+				return errors.Trace(err)
 			}
 			q := 0
 			p := bytes.Index(body, []byte("<body"))
@@ -152,7 +153,7 @@ func readDecoded(res *http.Response) ([]byte, error) {
 	case "gzip", "x-gzip":
 		gz, err := gzip.NewReader(src)
 		if err != nil {
-			return nil, err
+			return nil, errors.Trace(err)
 		}
 		defer gz.Close()
 		src = gz

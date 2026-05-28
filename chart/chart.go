@@ -25,6 +25,7 @@ import (
 	"strings"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 // ChartWidget is a chart from the Apache ECharts library.
@@ -97,12 +98,12 @@ func (wgt *ChartWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	}
 	htmlTmpl, err := template.New("chart").Funcs(funcMap).Parse(wgt.configTemplate)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	var buf bytes.Buffer
 	err = htmlTmpl.ExecuteTemplate(&buf, "chart", wgt.data)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	config := buf.String()
 	randomID := widget.RandomAlphaNumID(8)

@@ -28,6 +28,7 @@ import (
 	"github.com/alecthomas/chroma/v2/styles"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&CodeBlockWidget{}) // Ensure interface
@@ -136,11 +137,11 @@ func (wgt *CodeBlockWidget) Draw(w io.Writer, r *http.Request) (err error) {
 
 	iterator, err := lexer.Tokenise(nil, wgt.code)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	var buf bytes.Buffer
 	if err := formatter.Format(&buf, styles.Fallback, iterator); err != nil {
-		return err
+		return errors.Trace(err)
 	}
 
 	styleAttr := ""

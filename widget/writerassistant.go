@@ -18,6 +18,8 @@ package widget
 
 import (
 	"io"
+
+	"github.com/microbus-io/errors"
 )
 
 // WriterAssistant wraps an underlying writer,
@@ -35,33 +37,33 @@ func NewWriterAssistant(w io.Writer) *WriterAssistant {
 // Write writes bytes to the underlying writer.
 func (hw *WriterAssistant) Write(b []byte) (int, error) {
 	if hw.err != nil {
-		return 0, hw.err
+		return 0, errors.Trace(hw.err)
 	}
 	n, err := hw.w.Write(b)
 	if err != nil {
 		hw.err = err
 	}
-	return n, err
+	return n, errors.Trace(err)
 }
 
 // WriteString writes one or more strings to the underlying writer.
 func (hw *WriterAssistant) WriteString(items ...string) (int, error) {
 	if hw.err != nil {
-		return 0, hw.err
+		return 0, errors.Trace(hw.err)
 	}
 	nn := 0
 	for _, i := range items {
 		n, err := hw.w.Write([]byte(i))
 		if err != nil {
 			hw.err = err
-			return nn, hw.err
+			return nn, errors.Trace(hw.err)
 		}
 		nn += n
 	}
-	return nn, hw.err
+	return nn, errors.Trace(hw.err)
 }
 
 // Err is the first error encountered during a write operation.
 func (hw *WriterAssistant) Err() error {
-	return hw.err
+	return errors.Trace(hw.err)
 }

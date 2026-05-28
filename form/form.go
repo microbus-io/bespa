@@ -25,6 +25,7 @@ import (
 
 	"github.com/microbus-io/bespa/basic"
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 // FormWidget renders an input form.
@@ -276,7 +277,7 @@ func (wgt *FormWidget) Draw(w io.Writer, r *http.Request) (err error) {
 		// But do not include query arguments that are overwritten by other fields.
 		u, err := url.Parse(action)
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 		queryArgs = u.Query()
 		if len(queryArgs) > 0 {

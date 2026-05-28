@@ -30,6 +30,7 @@ import (
 	"github.com/microbus-io/bespa/website/resources"
 	"github.com/microbus-io/bespa/website/shared"
 	"github.com/microbus-io/bespa/website/storage"
+	"github.com/microbus-io/errors"
 )
 
 func HandleDirEdit(w http.ResponseWriter, r *http.Request) {
@@ -375,11 +376,11 @@ func HandleDirList(w http.ResponseWriter, r *http.Request) {
 func createStatesDropdown(initialValue string) (*form.DropdownWidget, error) {
 	dataFile, err := resources.Bundle.ReadFile("states.csv")
 	if err != nil {
-		return nil, err
+		return nil, errors.Trace(err)
 	}
 	records, err := csv.NewReader(bytes.NewReader(dataFile)).ReadAll()
 	if err != nil {
-		return nil, err
+		return nil, errors.Trace(err)
 	}
 	records = records[1:] // Discard header line
 

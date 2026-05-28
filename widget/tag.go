@@ -22,6 +22,8 @@ import (
 	"io"
 	"net/http"
 	"strings"
+
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&TagWidget{}) // Ensure interface
@@ -185,7 +187,7 @@ func (tag *TagWidget) Draw(w io.Writer, r *http.Request) (err error) {
 			tag.write(w, html.EscapeString(id))
 			tag.write(w, `"></span>`)
 		}
-		return tag.err
+		return errors.Trace(tag.err)
 	}
 	tag.write(w, "<")
 	tag.write(w, html.EscapeString(tag.name))
@@ -198,20 +200,20 @@ func (tag *TagWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	}
 	tag.write(w, ">")
 	if tag.err != nil {
-		return tag.err
+		return errors.Trace(tag.err)
 	}
 	if tag.endTag {
 		for _, c := range tag.children {
 			err = c.Draw(w, r)
 			if err != nil {
-				return err
+				return errors.Trace(err)
 			}
 		}
 		tag.write(w, "</")
 		tag.write(w, html.EscapeString(tag.name))
 		tag.write(w, ">")
 	}
-	return tag.err
+	return errors.Trace(tag.err)
 }
 
 // Drawn indicates whether this widget needs to be drawn in either a full or partial page rendering.
@@ -241,5 +243,5 @@ func (tag *TagWidget) write(w io.Writer, str string) error {
 			tag.err = err
 		}
 	}
-	return tag.err
+	return errors.Trace(tag.err)
 }

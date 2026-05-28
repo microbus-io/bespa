@@ -17,13 +17,13 @@ limitations under the License.
 package basic
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"strings"
 
 	"github.com/microbus-io/bespa/widget"
+	"github.com/microbus-io/errors"
 )
 
 var _ = Widget(&IconWidget{}) // Ensure interface

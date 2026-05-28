@@ -26,6 +26,7 @@ import (
 	"time"
 
 	"github.com/gomarkdown/markdown"
+	"github.com/microbus-io/errors"
 	"golang.org/x/text/language"
 	"golang.org/x/text/message"
 )
@@ -261,7 +262,7 @@ func (wgt *BytesWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	// }
 	_, err = w.Write(wgt.b)
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	// if wgt.ID() != "" {
 	// 	_, err = w.Write([]byte("</span>"))

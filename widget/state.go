@@ -21,6 +21,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/microbus-io/errors"
 )
 
 // Resettable allows resetting the reader of the request body stream.
@@ -114,5 +116,5 @@ func (s State) MarshalJSON() ([]byte, error) {
 		}
 	}
 	b, err := json.Marshal(m)
-	return b, err
+	return b, errors.Trace(err)
 }

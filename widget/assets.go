@@ -27,6 +27,7 @@ import (
 	"sync"
 
 	"github.com/microbus-io/bespa/css"
+	"github.com/microbus-io/errors"
 )
 
 // AssetRegistry is a singleton that keeps all the assets necessary to render widgets.
@@ -55,17 +56,17 @@ type FileSystem interface {
 func (a *assets) RegisterFS(fileSystem FileSystem) error {
 	dir, err := fileSystem.ReadDir(".")
 	if err != nil {
-		return err
+		return errors.Trace(err)
 	}
 	for _, file := range dir {
 		fileName := file.Name()
 		b, err := fileSystem.ReadFile(fileName)
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 		err = a.Register(fileName, b)
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	return nil
@@ -200,7 +201,7 @@ func (a *assets) writeStyle(w io.Writer) error {
 	for _, key := range keys {
 		_, err := w.Write([]byte(a.styles[key]))
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	return nil
@@ -218,7 +219,7 @@ func (a *assets) writeScript(w io.Writer) error {
 	for _, key := range keys {
 		_, err := w.Write([]byte(a.scripts[key]))
 		if err != nil {
-			return err
+			return errors.Trace(err)
 		}
 	}
 	return nil
