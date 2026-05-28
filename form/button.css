@@ -1,0 +1,199 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.SubmitButton {
+	display: inline-flex;
+	min-width: 0;
+}
+
+.SubmitButton > INPUT[type=checkbox] {
+	position: absolute;
+	height: calc(2.5em + 2px);
+	font-size: var(--md-sys-typescale-label-large-size);
+	width: 1px;
+	border: none !important;
+	outline: none !important;
+	z-index: -1;
+	margin-left: 2ch;
+	background-color: transparent;
+}
+
+BUTTON {
+	font-family: var(--md-sys-typescale-label-large-font);
+	font-size: var(--md-sys-typescale-label-large-size);
+	font-weight: var(--md-sys-typescale-label-large-weight);
+	line-height: var(--md-sys-typescale-label-large-line-height);
+	letter-spacing: var(--md-sys-typescale-label-large-tracking);
+	border-radius: 1.25em;
+	height: 2.5em;
+	padding: 0 2ch;
+	border: none;
+	cursor: pointer;
+	user-select: none;
+	outline: none;
+	text-align: center;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+BUTTON.Filled, BUTTON.Tonal, BUTTON.Text, BUTTON.Elevated {
+	height: calc(2.5em + 2px);
+}
+BUTTON:focus {
+	outline: none;
+}
+
+BUTTON > .Icon:first-child {
+	margin-right: 0.4ch;
+	margin-left: -0.25ch;
+	margin-bottom: -0.05em;
+	font-size: 1.1em;
+}
+BUTTON.SingleIcon {
+	width: calc(2.5em + 2px);
+	padding: 0;
+}
+BUTTON.SingleIcon > .Icon {
+	font-size: 1.5em !important;
+	margin: 0;
+}
+
+BUTTON.Filled {
+	color: rgb(var(--md-sys-color-on-primary));
+	background-color: rgb(var(--md-sys-color-primary));
+}
+BUTTON.Filled:hover:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-primary), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-primary), var(--md-sys-state-hover-state-layer-opacity)));
+}
+BUTTON.Filled:hover:active:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-primary), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-primary), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+BUTTON.Filled:focus:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-primary), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-primary), var(--md-sys-state-focus-state-layer-opacity)));
+}
+BUTTON.Filled:disabled {
+	cursor: default;
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+
+BUTTON.Outlined {
+	background-color: rgb(var(--md-sys-color-surface));
+	border: solid 1px rgb(var(--md-sys-color-outline));
+	color: var(--md-sys-color-on-primary);
+}
+BUTTON.Outlined:hover:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-hover-state-layer-opacity)));
+}
+BUTTON.Outlined:hover:active:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+BUTTON.Outlined:focus:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-focus-state-layer-opacity)));
+}
+BUTTON.Outlined:disabled {
+	cursor: default;
+	border-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+
+BUTTON.Text {
+	color: rgb(var(--md-sys-color-primary));
+	background-color: transparent;
+}
+BUTTON.Text:hover:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-hover-state-layer-opacity)));
+}
+BUTTON.Text:hover:active:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+BUTTON.Text:focus:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-focus-state-layer-opacity)));
+}
+BUTTON.Text:disabled {
+	cursor: default;
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+
+BUTTON.Tonal {
+	color: rgb(var(--md-sys-color-on-secondary-container));
+	background-color: rgb(var(--md-sys-color-secondary-container));
+}
+BUTTON.Tonal:hover:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-secondary-container), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-secondary-container), var(--md-sys-state-hover-state-layer-opacity)));
+}
+BUTTON.Tonal:hover:active:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-secondary-container), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-secondary-container), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+BUTTON.Tonal:focus:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-secondary-container), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-secondary-container), var(--md-sys-state-focus-state-layer-opacity)));
+}
+BUTTON.Tonal:disabled {
+	cursor: default;
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+
+BUTTON.Elevated {
+	color: rgb(var(--md-sys-color-primary));
+	background-color: rgb(var(--md-sys-color-surface));
+	box-shadow: var(--md-sys-elevation-level1-shadow);
+}
+BUTTON.Elevated:hover:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-hover-state-layer-opacity)));
+}
+BUTTON.Elevated:hover:active:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+BUTTON.Elevated:focus:not(:disabled) {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-primary), var(--md-sys-state-focus-state-layer-opacity)));
+}
+BUTTON.Elevated:disabled {
+	cursor: default;
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+	box-shadow: initial;
+}

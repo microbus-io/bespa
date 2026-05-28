@@ -1,0 +1,44 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.Field {
+	display: flex;
+	flex-wrap: wrap;
+	row-gap: 0.25em;
+}
+.FieldLabel {
+	color: rgb(var(--md-sys-color-on-surface-variant));
+	font-family: var(--md-sys-typescale-label-medium-font);
+	font-size: var(--md-sys-typescale-label-medium-size);
+	font-weight: var(--md-sys-typescale-label-medium-weight);
+	line-height: var(--md-sys-typescale-label-medium-line-height);
+	letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+}
+.Field > DIV:first-child {
+	flex-basis: 150px;
+	flex-grow: 1;
+	min-width: 25%;
+	max-width: 100%;
+}
+.Field > DIV:last-child {
+	flex-basis: 450px;
+	flex-grow: 3;
+	min-width: 75%;
+	max-width: 100%;
+}
+.Field > DIV:first-child A {
+	color: inherit;
+}

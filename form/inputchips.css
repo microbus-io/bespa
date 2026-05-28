@@ -1,0 +1,192 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.InputChips {
+	background-color: transparent;
+	border: solid 1px rgb(var(--md-sys-color-outline));
+	border-radius: 3px;
+	display: flex;
+	align-items: center;
+	row-gap: 0.5em;
+	padding: 0.25em 0.5ch;
+	flex-wrap: wrap;
+	min-height: 2.5em;
+}
+.InputChips:not([data-maxitems="1"]) {
+	column-gap: 1ch;
+}
+/* Valid */
+.InputChips:not(.Invalid):not(.Disabled):hover:not(.Focus) {
+	border-color: rgb(var(--md-sys-color-on-surface));
+	caret-color: rgb(var(--md-sys-color-primary));
+}
+.InputChips:not(.Invalid).Focus {
+	border-color: rgb(var(--md-sys-color-primary));
+	outline: none;
+}
+/* Invalid */
+.InputChips.Invalid:not(.Disabled):hover:not(.Focus) {
+	border-color: rgb(var(--md-sys-color-on-error-container));
+}
+.InputChips.Invalid {
+	border-color: rgb(var(--md-sys-color-error));
+	caret-color: rgb(var(--md-sys-color-error));
+}
+/* Disabled */
+.InputChips.Disabled {
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+	border-color: rgba(var(--md-sys-color-outline), var(--md-sys-state-disabled-container-state-layer-opacity));
+}
+
+/* Chip */
+.InputChips > .Chip {
+	display: flex;
+	align-items: center;
+	height: 32px;
+	white-space: nowrap;
+	max-width: 100%;
+	column-gap: 4px;
+}
+.InputChips:not([data-maxitems="1"]) > .Chip {
+	border: solid 1px rgb(var(--md-sys-color-outline));
+	border-radius: 8px;
+	background-color: rgb(var(--md-sys-color-surface));
+	color: rgb(var(--md-sys-color-on-surface-variant));
+	font-family: var(--md-sys-typescale-label-large-font);
+	font-size: var(--md-sys-typescale-label-large-size);
+	font-weight: var(--md-sys-typescale-label-large-weight);
+	letter-spacing: var(--md-sys-typescale-label-large-tracking);
+	line-height: var(--md-sys-typescale-label-large-line-height);
+	padding: 0 4px 0 12px;
+}
+.InputChips[data-maxitems="1"] > .Chip {
+	width: 100%;
+}
+
+.InputChips > .Chip > SPAN:first-child {
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+.InputChips[data-maxitems="1"] > .Chip > SPAN:first-child {
+	flex: 1;
+}
+
+.InputChips.Disabled > .Chip {
+	border-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+.InputChips:not(.Disabled) > .Chip {
+	cursor: hand;
+}
+.InputChips > .Chip > .Remove {
+	width: 20px;
+	height: 20px;
+	border-radius: 10px;
+	text-align: center;
+}
+.InputChips > .Chip > .Remove > I {
+	line-height: 20px;
+}
+.InputChips:not(.Disabled) > .Chip > .Remove:hover {
+	background-color: rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-hover-state-layer-opacity));
+}
+.InputChips:not(.Disabled) > .Chip > .Remove:hover:active {
+	background-color: rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-pressed-state-layer-opacity));
+}
+.InputChips:not(.Disabled):not([data-maxitems="1"]) > .Chip:hover {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-hover-state-layer-opacity)));
+}
+.InputChips:not(.Disabled):not([data-maxitems="1"]) > .Chip:focus {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-focus-state-layer-opacity)));
+}
+.InputChips:not(.Disabled):not([data-maxitems="1"]) > .Chip:hover:active {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+.InputChips > .BlankChip {
+	display: none;
+}
+
+.InputChips > INPUT[type="text"] {
+	flex: 1;
+	min-width: 8ch !important;
+	border: none !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	height: 32px !important;
+}
+.InputChips > INPUT[type="text"].Saturated {
+	/* display: none; */
+	width: 0px !important;
+    min-width: 0px !important;
+    flex: 0;
+}
+.InputChips > TEXTAREA {
+	display: none;
+}
+/* Popup */
+.InputChips > UL {
+	display: none;
+	position: absolute;
+	z-index: 2;
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-surface-tint), var(--md-sys-elevation-level2-tint-layer-opacity)),
+		rgba(var(--md-sys-color-surface-tint), var(--md-sys-elevation-level2-tint-layer-opacity)));
+	background-color: rgb(var(--md-sys-color-surface));
+	color: rgb(var(--md-sys-color-on-surface));
+	box-shadow: var(--md-sys-elevation-level1-shadow);
+	border-radius: 3px;
+	padding: 0.25em 0 0.25em 0;
+	cursor: default;
+}
+.InputChips > UL > LI {
+	padding: 0.5em 3ch 0.5em 1ch;
+	display: block;
+	white-space: nowrap;
+}
+.InputChips > UL > LI > DIV:first-child {
+	font-family: var(--md-sys-typescale-label-large-font);
+	font-size: var(--md-sys-typescale-label-large-size);
+	font-weight: var(--md-sys-typescale-label-large-weight);
+	line-height: var(--md-sys-typescale-label-large-line-height);
+	letter-spacing: var(--md-sys-typescale-label-large-tracking);
+}
+.InputChips > UL > LI > DIV:last-child {
+	font-family: var(--md-sys-typescale-label-small-font);
+	font-size: var(--md-sys-typescale-label-small-size);
+	font-weight: var(--md-sys-typescale-label-small-weight);
+	line-height: var(--md-sys-typescale-label-small-line-height);
+	letter-spacing: var(--md-sys-typescale-label-small-tracking);
+	color: rgba(var(--md-sys-color-on-background), calc(1 - var(--md-sys-state-disabled-state-layer-opacity)));
+}
+.InputChips:not(.Disabled) > UL > LI.Active {
+	background-color: rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity));
+}
+.InputChips:not(.Disabled) > UL > LI:hover {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-hover-state-layer-opacity)));
+}
+.InputChips:not(.Disabled) > UL > LI:hover:active {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-pressed-state-layer-opacity)));
+}

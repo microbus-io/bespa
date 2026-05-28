@@ -1,0 +1,150 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.RadioStrip.Vertical {
+	display: flex;
+	flex-direction: column;
+	row-gap: 0.5em;
+	flex-wrap: nowrap;
+}
+.RadioStrip.Horizontal {
+	display: flex;
+	flex-direction: row;
+	column-gap: 1ch;
+	row-gap: 0.5em;
+	flex-wrap: wrap;
+}
+.Radio, .Checkbox {
+	display: flex;
+    align-items: center;
+	column-gap: 2px;
+}
+.Radio > INPUT[type="radio"], .Checkbox > INPUT[type="checkbox"] {
+	flex-shrink: 0;
+    flex-grow: 0;
+}
+INPUT[type=radio], INPUT[type=checkbox] {
+	margin: 0;
+	padding: 0;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	height: 1.1em;
+	width: 1.1em;
+	vertical-align: text-top;
+	font-family: inherit;
+	font-size: inherit;
+	border-radius: 3px;
+	outline: none;
+}
+INPUT[type=radio] {
+	border-radius: 1em;
+}
+INPUT[type=Radio] + LABEL, INPUT[type=Checkbox] + LABEL {
+	margin-left: 0.5ch;
+	cursor: default;
+}
+
+/* Checkmark icon */
+INPUT[type=checkbox]:checked {
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>');
+	background-size: 0.8em;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+INPUT[type=checkbox]:not(:checked) {
+	background-image: none !important;
+}
+/* Enabled */
+INPUT[type=radio]:not(:disabled),
+INPUT[type=checkbox]:not(:disabled) {
+	border: solid 1px rgb(var(--md-sys-color-on-surface));
+	cursor: hand;
+}
+/* Invalid */
+.Radio.Invalid > INPUT[type=radio]:not(:disabled):invalid,
+.Checkbox.Invalid > INPUT[type=checkbox]:not(:disabled):invalid {
+	border: solid 1px rgb(var(--md-sys-color-error));
+}
+/* Checked */
+INPUT[type=radio]:checked:not(:disabled),
+INPUT[type=checkbox]:checked:not(:disabled) {
+	color: rgb(var(--md-sys-color-on-primary));
+	background-color: rgb(var(--md-sys-color-primary));
+	border-color: rgb(var(--md-sys-color-primary));
+}
+/* Checked and invalid */
+INPUT[type=radio]:checked:not(:disabled):invalid,
+INPUT[type=checkbox]:checked:not(:disabled):invalid {
+	background-color: rgb(var(--md-sys-error));
+	border-color: rgb(var(--md-sys-error));
+}
+/* Disabled */
+INPUT[type=radio]:disabled:not(:checked),
+INPUT[type=checkbox]:disabled:not(:checked) {
+	border: solid 1px rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+}
+INPUT[type=radio]:disabled:checked,
+INPUT[type=checkbox]:disabled:checked {
+	color: rgb(var(--md-sys-color-surface));
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+}
+INPUT[type=Radio]:disabled + LABEL,
+INPUT[type=Checkbox]:disabled + LABEL {
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+
+/* Hover */
+INPUT[type=radio]:checked:not(:disabled):hover,
+INPUT[type=checkbox]:checked:not(:disabled):hover {
+	outline: solid 0.5em rgba(var(--md-sys-color-primary), var(--md-sys-state-hover-state-layer-opacity));
+}
+INPUT[type=radio]:not(:checked):not(:disabled):hover,
+INPUT[type=checkbox]:not(:checked):not(:disabled):hover {
+	outline: solid 0.5em rgba(var(--md-sys-color-on-surface), var(--md-sys-state-hover-state-layer-opacity));
+}
+INPUT[type=radio]:not(:disabled):invalid:hover,
+INPUT[type=checkbox]:not(:disabled):invalid:hover {
+	outline: solid 0.5em rgba(var(--md-sys-color-error), var(--md-sys-state-hover-state-layer-opacity));
+}
+
+/* Pressed */
+INPUT[type=radio]:checked:not(:disabled):hover:active,
+INPUT[type=checkbox]:checked:not(:disabled):hover:active {
+	outline: solid 0.5em rgba(var(--md-sys-color-primary), var(--md-sys-state-pressed-state-layer-opacity));
+}
+INPUT[type=radio]:not(:checked):not(:disabled):hover:active,
+INPUT[type=checkbox]:not(:checked):not(:disabled):hover:active {
+	outline: solid 0.5em rgba(var(--md-sys-color-on-surface), var(--md-sys-state-pressed-state-layer-opacity));
+}
+INPUT[type=radio]:not(:disabled):invalid:hover:active,
+INPUT[type=checkbox]:not(:disabled):invalid:hover:active {
+	outline: solid 0.5em rgba(var(--md-sys-color-error), var(--md-sys-state-pressed-state-layer-opacity));
+}
+
+/* Focus */
+INPUT[type=radio]:checked:not(:disabled):focus,
+INPUT[type=checkbox]:checked:not(:disabled):focus {
+	outline: solid 0.5em rgba(var(--md-sys-color-primary), var(--md-sys-state-focus-state-layer-opacity));
+}
+INPUT[type=radio]:not(:checked):not(:disabled):focus,
+INPUT[type=checkbox]:not(:checked):not(:disabled):focus {
+	outline: solid 0.5em rgba(var(--md-sys-color-on-surface), var(--md-sys-state-focus-state-layer-opacity));
+}
+INPUT[type=radio]:not(:disabled):invalid:focus,
+INPUT[type=checkbox]:not(:disabled):invalid:focus {
+	outline: solid 0.5em rgba(var(--md-sys-color-error), var(--md-sys-state-focus-state-layer-opacity));
+}

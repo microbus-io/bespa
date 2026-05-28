@@ -1,0 +1,224 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.DataTable {
+	width: 100%;
+	overflow-x: auto;
+}
+TABLE {
+	font-family: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: inherit;
+	letter-spacing: inherit;
+}
+.DataTable > TABLE, .DataTable > TABLE > TBODY, .DataTable > TABLE > TBODY > TR {
+	width: 100%;
+}
+.DataTable > TABLE > TBODY > TR:last-child {
+	border-radius: 0 0 24px 24px;
+}
+.DataTable > TABLE > TBODY > TR > TH {
+	font-weight: 500;
+	color: rgb(var(--md-sys-color-on-surface-variant));
+	background-color: rgb(var(--md-sys-color-surface));
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-surface-tint), var(--md-sys-elevation-level1-tint-layer-opacity)),
+		rgba(var(--md-sys-color-surface-tint), var(--md-sys-elevation-level1-tint-layer-opacity)));
+}
+
+/* Reduce flicker */
+.DataTable:not(.WidthObserved) {
+	visibility: hidden;
+}
+
+/* NoHeader */
+.DataTable.NoHeader > TABLE > TBODY > TR:first-child > TH {
+	display: none;
+}
+
+/* Border */
+.DataTable > TABLE > TBODY > TR > TD,
+.DataTable > TABLE > TBODY > TR > TH {
+	border-width: 1px 0 0 1px;
+	border-style: solid;
+	border-color: rgb(var(--md-sys-color-surface-variant));
+}
+.DataTable > TABLE > TBODY > TR:last-child > TD, .DataTable > TABLE > TBODY > TR:last-child > TH {
+	border-bottom: solid 1px rgb(var(--md-sys-color-surface-variant));
+}
+.DataTable.Width_600	 > TABLE > TBODY > TR > .LastNarrow,
+.DataTable.Width600_1200 > TABLE > TBODY > TR > .LastWide,
+.DataTable.Width1200_	> TABLE > TBODY > TR > .LastExpanded {
+	border-right: solid 1px rgb(var(--md-sys-color-surface-variant));
+}
+
+/* Border radius */
+.DataTable.Width_600	 > TABLE > TBODY > TR:first-child > .FirstNarrow,
+.DataTable.Width600_1200 > TABLE > TBODY > TR:first-child > .FirstWide,
+.DataTable.Width1200_	 > TABLE > TBODY > TR:first-child > .FirstExpanded {
+	border-top-left-radius: 24px;
+}
+.DataTable.Width_600	 > TABLE > TBODY > TR:first-child > .LastNarrow,
+.DataTable.Width600_1200 > TABLE > TBODY > TR:first-child > .LastWide,
+.DataTable.Width1200_	 > TABLE > TBODY > TR:first-child > .LastExpanded {
+	border-top-right-radius: 24px;
+}
+.DataTable.Width_600	 > TABLE > TBODY > TR:last-child > .LastNarrow,
+.DataTable.Width600_1200 > TABLE > TBODY > TR:last-child > .LastWide,
+.DataTable.Width1200_	 > TABLE > TBODY > TR:last-child > .LastExpanded {
+	border-bottom-right-radius: 24px;
+}
+.DataTable.Width_600	 > TABLE > TBODY > TR:last-child > .FirstNarrow,
+.DataTable.Width600_1200 > TABLE > TBODY > TR:last-child > .FirstWide,
+.DataTable.Width1200_	 > TABLE > TBODY > TR:last-child > .FirstExpanded {
+	border-bottom-left-radius: 24px;
+}
+
+/* No border */
+.DataTable.NoBorder > TABLE > TBODY > TR > * {
+	border: none !important;
+}
+.DataTable.NoBorder > TABLE > TBODY > TR > TD {
+	border-radius: 0 !important;
+}
+.DataTable.NoBorder > TABLE > TBODY > TR > .FirstNarrow,
+.DataTable.NoBorder > TABLE > TBODY > TR > .FirstWide,
+.DataTable.NoBorder > TABLE > TBODY > TR > .FirstExpanded {
+	border-radius: 12px 0 0 12px !important;
+}
+.DataTable.NoBorder > TABLE > TBODY > TR > .LastNarrow,
+.DataTable.NoBorder > TABLE > TBODY > TR > .LastWide,
+.DataTable.NoBorder > TABLE > TBODY > TR > .LastExpanded {
+	border-radius: 0 12px 12px 0 !important;
+}
+.DataTable.NoBorder > TABLE > TBODY > TR:not([data-href]) > TD.FirstNarrow,
+.DataTable.NoBorder > TABLE > TBODY > TR:not([data-href]) > TD.FirstWide,
+.DataTable.NoBorder > TABLE > TBODY > TR:not([data-href]) > TD.FirstExpanded {
+	padding-left: 0 !important;
+}
+.DataTable.NoBorder > TABLE > TBODY > TR:not([data-href]) > TD.LastNarrow,
+.DataTable.NoBorder > TABLE > TBODY > TR:not([data-href]) > TD.LastWide,
+.DataTable.NoBorder > TABLE > TBODY > TR:not([data-href]) > TD.LastExpanded {
+	padding-right: 0 !important;
+}
+.DataTable.NoBorder > TABLE > TBODY > TR > TH {
+	padding: 8px 12px;
+}
+.DataTable.NoBorder > TABLE > TBODY > TR > TD {
+	padding: 6px 12px;
+}
+.DataTable.NoBorder.Width_600 > TABLE > TBODY > TR > TH,
+.DataTable.NoBorder.Width_600 > TABLE > TBODY > TR > TD {
+	padding: 4px 8px;
+}
+
+/* Visibility */
+.DataTable.Width_600 > TABLE > TBODY > TR > TH:not(.Narrow),
+.DataTable.Width_600 > TABLE > TBODY > TR > TD:not(.Narrow) {
+	display: none;
+}
+.DataTable.Width600_1200 > TABLE > TBODY > TR > TH:not(.Wide),
+.DataTable.Width600_1200 > TABLE > TBODY > TR > TD:not(.Wide) {
+	display: none;
+}
+.DataTable.Width1200_ > TABLE > TBODY > TR > TH:not(.Expanded),
+.DataTable.Width1200_ > TABLE > TBODY > TR > TD:not(.Expanded) {
+	display: none;
+}
+
+/* Cell padding */
+.DataTable > TABLE > TBODY > TR > TH  {
+	padding: 16px 12px;
+}
+.DataTable > TABLE > TBODY > TR > TD {
+	padding: 12px 12px;
+}
+.DataTable.Width_600 > TABLE > TBODY > TR > TH  {
+	padding: 16px 8px;
+}
+.DataTable.Width_600 > TABLE > TBODY > TR > TD {
+	padding: 12px 8px;
+}
+.DataTable > TABLE > TBODY > TR > .FirstNarrow,
+.DataTable > TABLE > TBODY > TR > .FirstWide,
+.DataTable > TABLE > TBODY > TR > .FirstExpanded {
+	padding-left: 16px;
+}
+.DataTable > TABLE > TBODY > TR > .LastNarrow,
+.DataTable > TABLE > TBODY > TR > .LastWide,
+.DataTable > TABLE > TBODY > TR > .LastExpanded {
+	padding-right: 16px;
+}
+
+/* Row height */
+.DataTable > TABLE > TBODY > TR.MinRowHt1 {
+	min-height: calc(1em + 1 * var(--md-sys-typescale-body-medium-line-height));
+}
+.DataTable > TABLE > TBODY > TR.MinRowHt2 {
+	min-height: calc(1em + 2 * var(--md-sys-typescale-body-medium-line-height));
+}
+.DataTable > TABLE > TBODY > TR.MinRowHt3 {
+	min-height: calc(1em + 3 * var(--md-sys-typescale-body-medium-line-height));
+}
+.DataTable > TABLE > TBODY > TR.MinRowHt4 {
+	min-height: calc(1em + 4 * var(--md-sys-typescale-body-medium-line-height));
+}
+.DataTable > TABLE > TBODY > TR.MinRowHt5 {
+	min-height: calc(1em + 5 * var(--md-sys-typescale-body-medium-line-height));
+}
+
+.DataTable > TABLE > TBODY > TR:first-child {
+	border: solid 1px rgb(var(--md-sys-color-surface-variant));
+	border-radius: 24px 24px 0 0;
+}
+
+/* Hover */
+.DataTable > TABLE > TBODY > TR[data-href]:hover {
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-hover-state-layer-opacity));
+	cursor: pointer;
+}
+.DataTable > TABLE > TBODY > TR[data-href]:hover:active {
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-pressed-state-layer-opacity));
+}
+.DataTable > TABLE > TBODY > TR[data-href]:focus {
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-focus-state-layer-opacity));
+}
+
+/* Empty row */
+.DataTable > TABLE > TBODY > TR.EmptyRow > TD {
+	font-family: var(--md-sys-typescale-label-medium-font);
+	font-size: var(--md-sys-typescale-label-medium-size);
+	font-weight: var(--md-sys-typescale-label-medium-weight);
+	line-height: var(--md-sys-typescale-label-medium-line-height);
+	letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+	text-align: center;
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+
+/* Vertical align */
+.DataTable.VAlignTop > TABLE > TBODY > TR,
+.DataTable > TABLE > TBODY > TR.VAlignTop {
+	vertical-align: top;
+}
+.DataTable.VAlignBottom > TABLE > TBODY > TR,
+.DataTable > TABLE > TBODY > TR.VAlignBottom {
+	vertical-align: bottom;
+}
+.DataTable.VAlignMiddle> TABLE > TBODY > TR,
+.DataTable > TABLE > TBODY > TR.VAlignMiddle {
+	vertical-align: middle;
+}

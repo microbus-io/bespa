@@ -1,0 +1,149 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+INPUT:not([type=radio]):not([type=checkbox]):not([type=range]),
+SELECT,
+TEXTAREA {
+	font-family: var(--md-sys-typescale-body-large-font);
+	font-size: var(--md-sys-typescale-body-large-size);
+	font-weight: var(--md-sys-typescale-body-large-weight);
+	line-height: var(--md-sys-typescale-body-large-line-height);
+	letter-spacing: var(--md-sys-typescale-body-large-tracking);
+	background-color: transparent;
+	color: rgb(var(--md-sys-color-on-surface));
+	border: solid 1px rgb(var(--md-sys-color-outline));
+	border-radius: 3px;
+	outline: none;
+	max-width: 100%;
+}
+INPUT:not([type=radio]):not([type=checkbox]):not([type=range]), SELECT {
+	height: 2.5em;
+	padding: 0 0.5ch;
+}
+INPUT[type=text].OTP {
+	font-size: calc(2.5 * var(--md-sys-typescale-body-large-size)) !important;
+	height: 1.5em !important;
+	letter-spacing: 0.5ch !important;
+}
+INPUT::placeholder, TEXTAREA::placeholder {
+	color: rgb(var(--md-sys-color-outline-variant));
+}
+INPUT:-webkit-autofill {
+	-webkit-box-shadow: 0 0 0 1000px rgb(var(--md-sys-color-surface)) inset;
+	-webkit-text-fill-color: rgb(var(--md-sys-color-on-surface));
+}
+HTML.Safari SELECT {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor"><polygon points="0,0 100,0 50,50"/></svg>');
+	background-repeat: no-repeat;
+	background-size: 12px;
+	background-position: right 4px center;
+	background-repeat: no-repeat;
+	padding-right: 20px;
+}
+.AlignInput {
+	height: 2.5em;
+	display: inline-flex;
+	align-items: center;
+}
+INPUT:not([type=radio]):not([type=checkbox]):not([type=time]):not([type=date]):not([type=month]):not([type=range]),
+TEXTAREA {
+	width: 100%;
+}
+INPUT[type=month] {
+	min-width: 18ch;
+}
+INPUT[type=date] {
+	min-width: 14ch;
+}
+INPUT[type=time] {
+	min-width: 14ch;
+}
+TEXTAREA {
+	resize: vertical;
+	padding: 0.25em 0.5ch;
+	min-height: 2.5em;
+}
+/* Disabled */
+INPUT:not([type=radio]):not([type=checkbox]):not([type=range]):disabled,
+TEXTAREA:disabled,
+SELECT:disabled {
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+	border-color: rgba(var(--md-sys-color-outline), var(--md-sys-state-disabled-container-state-layer-opacity));
+}
+SELECT:disabled, INPUT:disabled, TEXTAREA:disabled {
+	opacity: 1;
+}
+/* Valid */
+INPUT:not(.Invalid):not([type=radio]):not([type=checkbox]):not([type=range]):not(:disabled):hover:not(:focus) ,
+TEXTAREA:not(.Invalid):not(:disabled):hover:not(:focus) ,
+SELECT:not(.Invalid):not(:disabled):hover:not(:focus) {
+	border-color: rgb(var(--md-sys-color-on-surface));
+	caret-color: rgb(var(--md-sys-color-primary));
+}
+INPUT:not(.Invalid):not([type=radio]):not([type=checkbox]):not([type=range]):focus,
+SELECT:not(.Invalid):focus,
+TEXTAREA:not(.Invalid):focus {
+	border-color: rgb(var(--md-sys-color-primary));
+	outline: none;
+}
+/* Invalid */
+INPUT.Invalid:not([type=radio]):not([type=checkbox]):not([type=range]):not(:disabled):hover:not(:focus) ,
+TEXTAREA.Invalid:not(:disabled):hover:not(:focus) ,
+SELECT.Invalid:not(:disabled):hover:not(:focus) {
+	border-color: rgb(var(--md-sys-color-on-error-container));
+}
+INPUT.Invalid:not([type=radio]):not([type=checkbox]):not([type=range]),
+SELECT.Invalid,
+TEXTAREA.Invalid {
+	border-color: rgb(var(--md-sys-color-error));
+	caret-color: rgb(var(--md-sys-color-error));
+}
+/* Date, time and number icons */
+INPUT::-webkit-outer-spin-button, INPUT::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+INPUT[type=number] {
+  -moz-appearance: textfield;
+}
+INPUT[type=date]::-webkit-calendar-picker-indicator,
+INPUT[type=month]::-webkit-calendar-picker-indicator {
+	background-image: none;
+	background-color: rgb(var(--md-sys-color-on-surface));
+	-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 18H4V8h16v13z"/></svg>');
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center center;
+	-webkit-mask-size: 1em 1em;
+	cursor: hand;
+}
+INPUT[type=time]::-webkit-calendar-picker-indicator {
+	background-image: none;
+	background-color: rgb(var(--md-sys-color-on-surface));
+	-webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 12v-6h-2v8h7v-2h-5z"/></svg>');
+	-webkit-mask-repeat: no-repeat;
+	-webkit-mask-position: center center;
+	-webkit-mask-size: 1em 1em;
+	cursor: hand;
+}
+INPUT:disabled[type=date]::-webkit-calendar-picker-indicator,
+INPUT:disabled[type=month]:disabled::-webkit-calendar-picker-indicator,
+INPUT:disabled[type=time]::-webkit-calendar-picker-indicator {
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+	visibility: visible;
+}

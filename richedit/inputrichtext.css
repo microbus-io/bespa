@@ -1,0 +1,204 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+/* --- Wrapper layout ----------------------------------------------------- */
+
+/* The wrapper is a <span> (inline by default). display:flex column gives it block
+   layout for its Quill children without reserving an end-of-line baseline gap that
+   would otherwise show up as phantom padding under the editor. */
+BODY.Top .RichEdit {
+	display: flex;
+	flex-direction: column;
+	font-family: var(--md-sys-typescale-body-large-font);
+	font-size: var(--md-sys-typescale-body-large-size);
+	line-height: var(--md-sys-typescale-body-large-line-height);
+}
+BODY.Top .RichEdit .RichEditTextArea {
+	/* The Go side renders the textarea; we hide it once Quill takes over. */
+	display: none;
+}
+
+/* --- Quill snow theme: Material overrides ------------------------------- */
+
+/* Toolbar bar */
+BODY.Top .RichEdit .ql-toolbar.ql-snow {
+	border-color: rgb(var(--md-sys-color-outline));
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	background: rgb(var(--md-sys-color-background));
+}
+
+/* Container (sibling of toolbar). Sized by content; .ql-editor inside owns
+   the min/max height so the container doesn't double-stack heights. */
+BODY.Top .RichEdit .ql-container.ql-snow {
+	border-color: rgb(var(--md-sys-color-outline));
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
+	font-family: inherit;
+	font-size: inherit;
+}
+
+/* The actual editable surface owns the height envelope. */
+BODY.Top .RichEdit .ql-editor {
+	color: rgb(var(--md-sys-color-on-background));
+	min-height: var(--richedit-min-height, 12em);
+	max-height: var(--richedit-max-height, 24em);
+	overflow-y: auto;
+}
+BODY.Top .RichEdit .ql-editor.ql-blank::before {
+	color: rgba(var(--md-sys-color-on-background), var(--md-sys-state-disabled-state-layer-opacity));
+	font-style: normal;
+}
+
+/* Toolbar button icon colors (idle). Note the .ql-snow class lives on the
+   toolbar element itself, so the selector is .ql-toolbar.ql-snow — not a
+   descendant. */
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-stroke {
+	stroke: rgb(var(--md-sys-color-on-surface-variant));
+}
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-fill,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-stroke.ql-fill {
+	fill: rgb(var(--md-sys-color-on-surface-variant));
+}
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker {
+	color: rgb(var(--md-sys-color-on-surface-variant));
+}
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-options {
+	background: rgb(var(--md-sys-color-surface));
+	border-color: rgb(var(--md-sys-color-outline-variant));
+	color: rgb(var(--md-sys-color-on-surface));
+}
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+	border-color: rgb(var(--md-sys-color-outline));
+}
+
+/* Active / hover states recolor to the primary token. */
+BODY.Top .RichEdit .ql-toolbar.ql-snow button:hover,
+BODY.Top .RichEdit .ql-toolbar.ql-snow button:focus,
+BODY.Top .RichEdit .ql-toolbar.ql-snow button.ql-active,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-label:hover,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-label.ql-active,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-item:hover,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-item.ql-selected {
+	color: rgb(var(--md-sys-color-primary));
+}
+BODY.Top .RichEdit .ql-toolbar.ql-snow button:hover .ql-stroke,
+BODY.Top .RichEdit .ql-toolbar.ql-snow button:focus .ql-stroke,
+BODY.Top .RichEdit .ql-toolbar.ql-snow button.ql-active .ql-stroke,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-label:hover .ql-stroke,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-label.ql-active .ql-stroke,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-item:hover .ql-stroke,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-item.ql-selected .ql-stroke {
+	stroke: rgb(var(--md-sys-color-primary));
+}
+BODY.Top .RichEdit .ql-toolbar.ql-snow button:hover .ql-fill,
+BODY.Top .RichEdit .ql-toolbar.ql-snow button:focus .ql-fill,
+BODY.Top .RichEdit .ql-toolbar.ql-snow button.ql-active .ql-fill,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-label:hover .ql-fill,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-label.ql-active .ql-fill,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-item:hover .ql-fill,
+BODY.Top .RichEdit .ql-toolbar.ql-snow .ql-picker-item.ql-selected .ql-fill {
+	fill: rgb(var(--md-sys-color-primary));
+}
+
+/* --- Content typography ------------------------------------------------- */
+
+BODY.Top .RichEdit .ql-editor blockquote {
+	border-left: 1px solid rgb(var(--md-sys-color-outline));
+	color: inherit;
+	padding-left: 1ch;
+	padding-right: 1ch;
+}
+BODY.Top .RichEdit .ql-editor pre.ql-syntax,
+BODY.Top .RichEdit .ql-editor code {
+	background: rgba(var(--md-sys-color-surface-tint), var(--md-sys-elevation-level1-tint-layer-opacity));
+	color: inherit;
+	border-radius: 3px;
+	font-family: "Roboto Mono", monospace;
+}
+BODY.Top .RichEdit .ql-editor code {
+	padding: 0 0.5ch;
+}
+BODY.Top .RichEdit .ql-editor a {
+	color: rgb(var(--md-sys-color-primary));
+}
+BODY.Top .RichEdit .ql-editor hr {
+	background: unset;
+	border: none;
+	border-top: solid 1px rgb(var(--md-sys-color-outline-variant));
+	margin: 16px 0;
+}
+
+/* --- Link tooltip ------------------------------------------------------- */
+
+BODY.Top .ql-snow .ql-tooltip {
+	background: rgb(var(--md-sys-color-surface));
+	border-color: rgb(var(--md-sys-color-outline-variant));
+	color: rgb(var(--md-sys-color-on-surface));
+	box-shadow: var(--md-sys-elevation-level1-shadow);
+	border-radius: 4px;
+}
+BODY.Top .ql-snow .ql-tooltip input[type=text] {
+	background: rgb(var(--md-sys-color-background));
+	color: rgb(var(--md-sys-color-on-background));
+	border-color: rgb(var(--md-sys-color-outline));
+	border-radius: 3px;
+}
+BODY.Top .ql-snow .ql-tooltip a.ql-action,
+BODY.Top .ql-snow .ql-tooltip a.ql-remove {
+	color: rgb(var(--md-sys-color-primary));
+}
+
+/* --- Mentions ----------------------------------------------------------- */
+
+BODY.Top .RichEdit .mention {
+	background: rgb(var(--md-sys-color-tertiary-container));
+	color: rgb(var(--md-sys-color-on-tertiary-container));
+	border-radius: 3px;
+	padding: 1px 0.5ch;
+}
+BODY.Top .RichEdit[disabled] .mention {
+	opacity: var(--md-sys-state-disabled-state-layer-opacity);
+}
+BODY.Top .ql-mention-list-container {
+	background: rgb(var(--md-sys-color-surface));
+	border: 1px solid rgb(var(--md-sys-color-outline-variant));
+	box-shadow: var(--md-sys-elevation-level1-shadow);
+	border-radius: 4px;
+	color: rgb(var(--md-sys-color-on-surface));
+}
+BODY.Top .ql-mention-list-item {
+	color: inherit;
+}
+BODY.Top .ql-mention-list-item.selected,
+BODY.Top .ql-mention-list-item:hover {
+	background: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-hover-state-layer-opacity));
+	color: rgb(var(--md-sys-color-on-surface));
+}
+
+/* --- Disabled / invalid ------------------------------------------------- */
+
+BODY.Top .RichEdit[disabled] .ql-toolbar.ql-snow,
+BODY.Top .RichEdit[disabled] .ql-container.ql-snow {
+	border-color: rgba(var(--md-sys-color-outline), var(--md-sys-state-disabled-container-state-layer-opacity));
+}
+BODY.Top .RichEdit[disabled] .ql-editor {
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+BODY.Top .RichEdit.Invalid .ql-toolbar.ql-snow,
+BODY.Top .RichEdit.Invalid .ql-container.ql-snow {
+	border-color: rgb(var(--md-sys-color-error)) !important;
+}

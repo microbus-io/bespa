@@ -1,0 +1,110 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.FilterChip {
+	font-family: var(--md-sys-typescale-label-large-font);
+	font-size: var(--md-sys-typescale-label-large-size);
+	font-weight: var(--md-sys-typescale-label-large-weight);
+	line-height: var(--md-sys-typescale-label-large-line-height);
+	letter-spacing: var(--md-sys-typescale-label-large-tracking);
+	user-select: none;
+	border-radius: 8px;
+	height: 32px;
+	display: inline-flex;
+	align-items: center;
+	padding: 5px 0;
+	vertical-align: bottom;
+	max-width: 100%;
+}
+.FilterChip > INPUT:first-child {
+	display: none;
+}
+.FilterChip > .Icon {
+	width: 0px;
+	font-size: 13.5pt !important;
+	line-height: 13.5pt !important;
+	transition: width 0.15s;
+	overflow: hidden;
+}
+.FilterChip > SPAN:last-child {
+	max-width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+/* Disabled */
+.FilterChip[disabled] {
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+}
+.FilterChip[disabled].Selected {
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+	background-color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+}
+.FilterChip[disabled]:not(.Selected) {
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+	border: solid 1px rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-container-state-layer-opacity));
+}
+.FilterChip:not([disabled]) {
+	cursor: hand;
+}
+
+/* Checked */
+.FilterChip.Selected {
+	padding-left: 8px;
+	padding-right: 16px;
+}
+.FilterChip.Selected > .Icon {
+	width: 26px;
+}
+.FilterChip:not([disabled]).Selected {
+	color: rgb(var(--md-sys-color-on-secondary-container));
+	background-color: rgb(var(--md-sys-color-secondary-container));
+}
+.FilterChip:not([disabled]).Selected:hover {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-surface), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-surface), var(--md-sys-state-hover-state-layer-opacity)));
+}
+.FilterChip:not([disabled]).Selected:hover:active {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-surface), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-surface), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+.FilterChip:not([disabled]).Selected:focus {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-surface), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-surface), var(--md-sys-state-focus-state-layer-opacity)));
+}
+
+/* Unchecked */
+.FilterChip:not(.Selected) {
+	padding-left: 16px;
+	padding-right: 16px;
+}
+.FilterChip:not([disabled]):not(.Selected) {
+	border: solid 1px rgb(var(--md-sys-color-outline));
+	color: rgb(var(--md-sys-color-on-surface-variant));
+}
+.FilterChip:not([disabled]):not(.Selected):hover {
+	background-color: rgba(var(--md-sys-color-surface-variant), var(--md-sys-state-hover-state-layer-opacity));
+}
+.FilterChip:not([disabled]):not(.Selected):hover:active {
+	background-color: rgba(var(--md-sys-color-surface-variant), var(--md-sys-state-pressed-state-layer-opacity));
+}
+.FilterChip:not([disabled]):not(.Selected):focus {
+	background-color: rgba(var(--md-sys-color-surface-variant), var(--md-sys-state-focus-state-layer-opacity));
+}

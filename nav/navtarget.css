@@ -1,0 +1,202 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+.NavTarget {
+	color: rgb(var(--md-sys-color-on-secondary-container));
+}
+.NavTarget:hover {
+	text-decoration: none;
+}
+*:not(.NavRail):not(.NavStrip) > .Panel > .NavTarget {
+	font-family: var(--md-sys-typescale-label-large-font);
+	font-size: var(--md-sys-typescale-label-large-size);
+	font-weight: var(--md-sys-typescale-label-large-weight);
+	line-height: var(--md-sys-typescale-label-large-line-height);
+	letter-spacing: var(--md-sys-typescale-label-large-tracking);
+	display: flex;
+	flex-direction: row;
+	/* flex-wrap: wrap; */
+	column-gap: 12px;
+	align-items: center;
+	align-content: center;
+	/* height: 48px; */
+	min-height: 48px;
+	border-radius: 28px;
+	padding-left: 16px;
+	padding-right: 24px;
+}
+*:not(.NavRail):not(.NavStrip) > .Panel > .NavTarget.Tabulated {
+	margin-left: 32px;
+}
+.NavRail > .Panel > .NavTarget {
+	font-family: var(--md-sys-typescale-label-medium-font);
+	font-size: var(--md-sys-typescale-label-medium-size);
+	font-weight: var(--md-sys-typescale-label-medium-weight);
+	line-height: var(--md-sys-typescale-label-medium-line-height);
+	letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+	display: flex;
+	flex-direction: column;
+	row-gap: 4px;
+	align-items: center;
+}
+.NavStrip > .Slider > .Panel > .NavTarget {
+	font-family: var(--md-sys-typescale-label-medium-font);
+	font-size: var(--md-sys-typescale-label-medium-size);
+	font-weight: var(--md-sys-typescale-label-medium-weight);
+	line-height: var(--md-sys-typescale-label-medium-line-height);
+	letter-spacing: var(--md-sys-typescale-label-medium-tracking);
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	column-gap: 2px;
+	align-items: center;
+	align-content: center;
+	/* height: 32px; */
+	min-height: 32px;
+	border-radius: 16px;
+	padding-left: 12px;
+	padding-right: 12px;
+}
+
+/* Icon */
+.NavTarget > .TgtIcon {
+	font-size: 18pt;
+	height: 24px;
+	line-height: 18pt;
+	position: relative;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+.NavTarget > .TgtIcon.TgtNoIcon {
+	display: none;
+}
+.NavRail > .Panel > .NavTarget > .TgtIcon.TgtNoIcon {
+	display: initial;
+}
+.NavRail > .Panel > .NavTarget > .TgtIcon {
+	padding: 4px 16px;
+	border-radius: 16px;
+	height: 32px;
+	width: 56px;
+}
+.NavTarget > .TgtNext {
+	display: none;
+	flex-shrink: 0;
+	flex-grow: 0;
+}
+.NavTarget[data-next] > .TgtNext {
+	font-size: 18pt;
+	height: 24px;
+	line-height: 18pt;
+	display: initial;
+	margin-right: -4px;
+}
+.NavRail > .Panel > .NavTarget > .TgtNext {
+	display: none;
+}
+/* Label */
+.NavTarget > .TgtLabel {
+	flex-grow: 1;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+/* Badges */
+.NavTarget > .Badge {
+	display: none;
+}
+.NavDrawer > .Slider > .Panel > .NavTarget > .Badge {
+	display: initial;
+	margin-left: auto;
+	color: rgb(var(--md-sys-color-on-surface-variant));
+	white-space: nowrap;
+}
+.NavTarget > .TgtIcon > .MiniBadge {
+	display: none;
+	font-family: var(--md-sys-typescale-label-small-font);
+	font-size: var(--md-sys-typescale-label-small-size);
+	font-weight: var(--md-sys-typescale-label-small-weight);
+	line-height: var(--md-sys-typescale-label-small-line-height);
+	letter-spacing: var(--md-sys-typescale-label-small-tracking);
+	background-color: rgb(var(--md-sys-color-error));
+	color: rgb(var(--md-sys-color-on-error));
+	margin-top: -4px;
+	margin-left: -10px;
+	border-radius: 8px;
+	position: absolute;
+	padding: 0 4px;
+	height: 16px;
+	min-width: 16px;
+	text-align: center;
+}
+.NavTarget > .TgtIcon > .MiniBadge.MicroBadge {
+	height: 6px;
+	min-width: 6px;
+	padding: 0;
+	border-radius: 3px;
+	margin-left: -5px;
+	margin-top: 1px;
+}
+.NavRail > .Panel > .NavTarget > .TgtIcon > .MiniBadge,
+.NavStrip > .Panel > .NavTarget > .TgtIcon > .MiniBadge {
+	display: initial;
+}
+
+/* Unselected */
+.NavDrawer > .Slider > .Panel > .NavTarget:not(.Selected):hover,
+.NavStrip  > .Slider > .Panel > .NavTarget:not(.Selected):hover,
+.NavRail > .Panel > .NavTarget:not(.Selected):hover > .TgtIcon {
+	background-color: rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-hover-state-layer-opacity));
+}
+.NavDrawer > .Slider > .Panel > .NavTarget:not(.Selected):hover:active,
+.NavStrip  > .Slider > .Panel > .NavTarget:not(.Selected):hover:active,
+.NavRail > .Panel > .NavTarget:not(.Selected):hover:active > .TgtIcon {
+	background-color: rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-pressed-state-layer-opacity));
+}
+.NavDrawer > .Slider > .Panel > .NavTarget:not(.Selected):focus,
+.NavStrip  > .Slider > .Panel > .NavTarget:not(.Selected):focus,
+.NavRail > .Panel > .NavTarget:not(.Selected):focus > .TgtIcon {
+	background-color: rgba(var(--md-sys-color-on-surface-variant), var(--md-sys-state-focus-state-layer-opacity));
+}
+
+/* Selected */
+.NavDrawer > .Slider > .Panel > .NavTarget.Selected,
+.NavStrip  > .Slider > .Panel > .NavTarget.Selected,
+.NavRail > .Panel > .NavTarget.Selected > .TgtIcon {
+	background-color: rgb(var(--md-sys-color-secondary-container));
+}
+.NavDrawer > .Slider > .Panel > .NavTarget.Selected:hover,
+.NavStrip  > .Slider > .Panel > .NavTarget.Selected:hover,
+.NavRail > .Panel > .NavTarget.Selected:hover > .TgtIcon {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-hover-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-hover-state-layer-opacity)));
+		text-decoration: none;
+}
+.NavDrawer > .Slider > .Panel > .NavTarget.Selected:hover:active,
+.NavStrip  > .Slider > .Panel > .NavTarget.Selected:hover:active,
+.NavRail > .Panel > .NavTarget.Selected:hover:active > .TgtIcon {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-pressed-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-pressed-state-layer-opacity)));
+}
+.NavDrawer > .Slider > .Panel > .NavTarget.Selected:focus,
+.NavStrip  > .Slider > .Panel > .NavTarget.Selected:focus,
+.NavRail > .Panel > .NavTarget.Selected:focus > .TgtIcon {
+	background-image: linear-gradient(
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-focus-state-layer-opacity)),
+		rgba(var(--md-sys-color-on-surface), var(--md-sys-state-focus-state-layer-opacity)));
+}

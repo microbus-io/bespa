@@ -1,0 +1,216 @@
+/*
+Copyright (c) 2023-2026 Microbus LLC and various contributors
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+	http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+/* --- Container ----------------------------------------------------------
+   The outer <div class="CodeBlock"> is a thin bespa-side wrapper that carries
+   data-id; the visual styling lives on the inner <pre class="chroma"> that
+   Chroma emits. */
+
+BODY.Top .CodeBlock {
+	border-radius: 4px;
+	overflow: hidden;
+	margin: 0;
+}
+BODY.Top .CodeBlock .chroma {
+	background: rgba(var(--md-sys-color-surface-tint), var(--md-sys-elevation-level1-tint-layer-opacity));
+	color: rgb(var(--md-sys-color-on-surface));
+	border: solid 1px rgb(var(--md-sys-color-outline-variant));
+	border-radius: 4px;
+	font-family: "Roboto Mono", monospace;
+	font-size: var(--md-sys-typescale-body-medium-size);
+	line-height: var(--md-sys-typescale-body-medium-line-height);
+	padding: 1em 1ch;
+	margin: 0;
+	overflow: auto;
+	tab-size: 4;
+	/* Optional vertical cap set by WithMaxRows / WithMaxHeight via inline style
+	   on the outer .CodeBlock. Without it, the block grows to fit its content. */
+	max-height: var(--codeblock-max-height, none);
+}
+BODY.Top .CodeBlock.NoFrame .chroma {
+	background: transparent;
+	border: none;
+	padding: 0;
+}
+BODY.Top .CodeBlock .chroma code {
+	background: unset;
+	border: none;
+	padding: 0;
+	font-family: inherit;
+	color: inherit;
+}
+
+/* Inline line numbers. Each code line gets a leading <span class="lnt"> from
+   Chroma. We style it as a right-aligned fixed-width gutter with a divider on
+   the right; user-select:none keeps clipboard copies free of the numbers. */
+BODY.Top .CodeBlock .lnt,
+BODY.Top .CodeBlock .ln {
+	display: inline-block;
+	width: 3ch;
+	margin-right: 1ch;
+	padding-right: 1ch;
+	text-align: right;
+	color: rgba(var(--md-sys-color-on-surface), var(--md-sys-state-disabled-state-layer-opacity));
+	border-right: solid 1px rgb(var(--md-sys-color-outline-variant));
+	user-select: none;
+}
+
+/* --- Token classes -----------------------------------------------------
+   Chroma's standard short class names; see
+   https://pkg.go.dev/github.com/alecthomas/chroma/v2#TokenType for the
+   exhaustive list. We only style the families that show up in real code.
+*/
+
+/* Comments — dimmed and italic. */
+BODY.Top .CodeBlock .c,
+BODY.Top .CodeBlock .ch,
+BODY.Top .CodeBlock .cm,
+BODY.Top .CodeBlock .c1,
+BODY.Top .CodeBlock .cs,
+BODY.Top .CodeBlock .cp,
+BODY.Top .CodeBlock .cpf {
+	color: rgb(var(--md-sys-color-on-surface-variant));
+	font-style: italic;
+}
+
+/* Keywords — primary, bold. */
+BODY.Top .CodeBlock .k,
+BODY.Top .CodeBlock .kc,
+BODY.Top .CodeBlock .kd,
+BODY.Top .CodeBlock .kn,
+BODY.Top .CodeBlock .kp,
+BODY.Top .CodeBlock .kr {
+	color: rgb(var(--md-sys-color-primary));
+	font-weight: 600;
+}
+
+/* Type-keywords (int, string, bool, …) — secondary. */
+BODY.Top .CodeBlock .kt,
+BODY.Top .CodeBlock .nc,
+BODY.Top .CodeBlock .nn {
+	color: rgb(var(--md-sys-color-secondary));
+}
+
+/* String literals — tertiary. */
+BODY.Top .CodeBlock .s,
+BODY.Top .CodeBlock .sa,
+BODY.Top .CodeBlock .sb,
+BODY.Top .CodeBlock .sc,
+BODY.Top .CodeBlock .dl,
+BODY.Top .CodeBlock .sd,
+BODY.Top .CodeBlock .s2,
+BODY.Top .CodeBlock .se,
+BODY.Top .CodeBlock .sh,
+BODY.Top .CodeBlock .si,
+BODY.Top .CodeBlock .sx,
+BODY.Top .CodeBlock .sr,
+BODY.Top .CodeBlock .s1,
+BODY.Top .CodeBlock .ss {
+	color: rgb(var(--md-sys-color-tertiary));
+}
+
+/* Numeric literals — tertiary. */
+BODY.Top .CodeBlock .m,
+BODY.Top .CodeBlock .mb,
+BODY.Top .CodeBlock .mf,
+BODY.Top .CodeBlock .mh,
+BODY.Top .CodeBlock .mi,
+BODY.Top .CodeBlock .il,
+BODY.Top .CodeBlock .mo {
+	color: rgb(var(--md-sys-color-tertiary));
+}
+
+/* Function names. */
+BODY.Top .CodeBlock .nf,
+BODY.Top .CodeBlock .fm {
+	color: rgb(var(--md-sys-color-primary));
+}
+
+/* Built-ins (println, len, append, …) — slightly dimmer than user functions. */
+BODY.Top .CodeBlock .nb,
+BODY.Top .CodeBlock .bp {
+	color: rgb(var(--md-sys-color-secondary));
+}
+
+/* Operators and operator-words (and, or, in, …) */
+BODY.Top .CodeBlock .o,
+BODY.Top .CodeBlock .ow {
+	color: rgb(var(--md-sys-color-on-surface));
+}
+BODY.Top .CodeBlock .ow {
+	font-weight: 600;
+}
+
+/* Decorators / annotations (@override, etc.) */
+BODY.Top .CodeBlock .nd,
+BODY.Top .CodeBlock .na {
+	color: rgb(var(--md-sys-color-secondary));
+}
+
+/* Variable names — default on-surface; explicit class kept for completeness. */
+BODY.Top .CodeBlock .nv,
+BODY.Top .CodeBlock .vc,
+BODY.Top .CodeBlock .vg,
+BODY.Top .CodeBlock .vi,
+BODY.Top .CodeBlock .vm {
+	color: rgb(var(--md-sys-color-on-surface));
+}
+
+/* Tags (HTML/XML) — primary. */
+BODY.Top .CodeBlock .nt {
+	color: rgb(var(--md-sys-color-primary));
+}
+
+/* Constants and labels. */
+BODY.Top .CodeBlock .no,
+BODY.Top .CodeBlock .nl,
+BODY.Top .CodeBlock .ni,
+BODY.Top .CodeBlock .ne {
+	color: rgb(var(--md-sys-color-tertiary));
+}
+
+/* Punctuation — same as text body. */
+BODY.Top .CodeBlock .p {
+	color: rgb(var(--md-sys-color-on-surface));
+}
+
+/* Errors — bordered red. */
+BODY.Top .CodeBlock .err {
+	color: rgb(var(--md-sys-color-error));
+	border-bottom: dotted 1px rgb(var(--md-sys-color-error));
+}
+
+/* Generic styles: deleted (red), inserted (green-ish primary), heading, prompt. */
+BODY.Top .CodeBlock .gd {
+	color: rgb(var(--md-sys-color-error));
+}
+BODY.Top .CodeBlock .gi {
+	color: rgb(var(--md-sys-color-primary));
+}
+BODY.Top .CodeBlock .gh,
+BODY.Top .CodeBlock .gu {
+	color: rgb(var(--md-sys-color-primary));
+	font-weight: 600;
+}
+BODY.Top .CodeBlock .ge {
+	font-style: italic;
+}
+BODY.Top .CodeBlock .gs {
+	font-weight: 600;
+}
+BODY.Top .CodeBlock .gp {
+	color: rgb(var(--md-sys-color-on-surface-variant));
+}
