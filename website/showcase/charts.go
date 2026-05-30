@@ -143,7 +143,7 @@ func HandleCharts(w http.ResponseWriter, r *http.Request) {
 			emphasis: { label: { show: true } },
 			data: %s
 		}]
-	}`, minGDP, maxGDP, mapDataJSON), nil).WithHeight(600)
+	}`, minGDP, maxGDP, mapDataJSON), nil).WithHeight("600px")
 
 	page := wf.Page().Add(
 		wf.AppBar("Chart widgets"),

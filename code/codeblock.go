@@ -100,15 +100,14 @@ func (wgt *CodeBlockWidget) WithMaxRows(rows int) *CodeBlockWidget {
 }
 
 // WithMaxHeight caps the visible height of the code block at the given CSS
-// length. Allowed units are any CSS length unit ("px", "em", "rem", "ch", "vh"
-// etc.). Content beyond the cap scrolls vertically. A non-positive value
-// removes the cap.
-func (wgt *CodeBlockWidget) WithMaxHeight(value float32, unit string) *CodeBlockWidget {
-	if value <= 0 {
+// length, e.g. "300px", "50vh" or "calc(100vh - 50px)". Content beyond the cap
+// scrolls vertically. Empty removes the cap.
+func (wgt *CodeBlockWidget) WithMaxHeight(css string) *CodeBlockWidget {
+	if css == "" {
 		wgt.maxHeight = ""
 		return wgt
 	}
-	wgt.maxHeight = fmt.Sprintf("%g%s", value, unit)
+	wgt.maxHeight = css
 	return wgt
 }
 

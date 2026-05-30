@@ -17,7 +17,6 @@ limitations under the License.
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -44,16 +43,16 @@ func (f BasicFactory) SidePanel(name string) *SidePanelWidget {
 		name: name,
 	}
 	x.WidgetBase = widget.NewWidgetBase(x)
-	x.WithWidth(400, "px")
+	x.WithWidth("400px")
 	return x
 }
 
 // WithWidth sets the width of the side panel. Default is 400px.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
+// Pass any CSS length, e.g. "400px", "50%" or "calc(100vh - 50px)". Empty clears it.
 // The panel is capped at 90% of the viewport width regardless.
-func (wgt *SidePanelWidget) WithWidth(width float32, unit string) *SidePanelWidget {
-	if width > 0 {
-		wgt.width = fmt.Sprintf("width:%f%s", width, unit)
+func (wgt *SidePanelWidget) WithWidth(css string) *SidePanelWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}

@@ -42,7 +42,7 @@ func (f TableFactory) QuickSearch() *QuickSearchWidget {
 		tableName: "table",
 		input: factory.InputText("", "").
 			WithLength(0, 32).
-			WithWidth(16).
+			WithWidth("16ch").
 			WithPlaceholder("Search"),
 	}
 	x.WidgetBase = widget.NewWidgetBase(x)
@@ -64,10 +64,11 @@ func (wgt *QuickSearchWidget) WithLength(minChars int, maxChars int) *QuickSearc
 	return wgt
 }
 
-// WithWidth sets the visual width of the field, in characters.
+// WithWidth sets the visual width of the field. Pass any CSS length,
+// e.g. "16ch", "200px" or "100%".
 // By default, the field stretches to the full available width (100%).
-func (wgt *QuickSearchWidget) WithWidth(chars int) *QuickSearchWidget {
-	wgt.input.WithWidth(chars)
+func (wgt *QuickSearchWidget) WithWidth(css string) *QuickSearchWidget {
+	wgt.input.WithWidth(css)
 	return wgt
 }
 

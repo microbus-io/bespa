@@ -30,13 +30,11 @@ limitations under the License.
 .Field > DIV:first-child {
 	flex-basis: 150px;
 	flex-grow: 1;
-	min-width: 25%;
 	max-width: 100%;
 }
 .Field > DIV:last-child {
 	flex-basis: 450px;
-	flex-grow: 3;
-	min-width: 75%;
+	flex-grow: 9;
 	max-width: 100%;
 }
 .Field > DIV:first-child A {

@@ -16,14 +16,14 @@ limitations under the License.
 
 async function page_click(event) {
 	let link = event.target;
-	while (link.tagName!="A" && link!=event.currentTarget) {
+	while (link.tagName?.toUpperCase()!="A" && link!=event.currentTarget) {
 		link = link.parentElement;
 	}
-	if (link.tagName=="A") {
+	if (link.tagName?.toUpperCase()=="A") {
 		event.stopPropagation()
 		event.preventDefault();
 		const page = event.currentTarget;
-		const action = link.getAttribute("href");
+		const action = link.getAttribute("href") ?? link.getAttribute("xlink:href");
 		if (action==null) {
 			return;
 		}
@@ -35,7 +35,7 @@ async function page_click(event) {
 }
 
 async function page_submit(event) {
-	if (event.target.tagName=="FORM") {
+	if (event.target.tagName?.toUpperCase()=="FORM") {
 		event.stopPropagation()
 		event.preventDefault();
 		const page = event.currentTarget;
@@ -65,7 +65,7 @@ async function page_submit(event) {
 				}
 			}
 		}
-		if (event.submitter.tagName=="BUTTON" && event.submitter.name) {
+		if (event.submitter.tagName?.toUpperCase()=="BUTTON" && event.submitter.name) {
 			payload.set(event.submitter.name, event.submitter.value);
 		}
 		await page_nav(page, form.method.toUpperCase(), action, payload, target);

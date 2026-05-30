@@ -17,7 +17,6 @@ limitations under the License.
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -91,15 +90,15 @@ func (wgt *CardWidget) WithDisabled(disabled bool) *CardWidget {
 	return wgt
 }
 
-// WithMinHeight sets the card's minimum height. Default is 240px; pass 0
-// to size to content instead.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *CardWidget) WithMinHeight(minHeight float32, unit string) *CardWidget {
-	if minHeight <= 0 {
+// WithMinHeight sets the card's minimum height. Default is 240px; empty
+// sizes to content instead.
+// Pass any CSS length, e.g. "240px", "50%" or "calc(100vh - 50px)".
+func (wgt *CardWidget) WithMinHeight(css string) *CardWidget {
+	if css == "" {
 		wgt.minHeight = ""
 		return wgt
 	}
-	wgt.minHeight = fmt.Sprintf("min-height:%f%s", minHeight, unit)
+	wgt.minHeight = "min-height:" + css
 	return wgt
 }
 

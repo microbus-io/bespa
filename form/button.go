@@ -17,7 +17,6 @@ limitations under the License.
 package form
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -110,10 +109,10 @@ func (wgt *ButtonWidget) WithTarget(target string) *ButtonWidget {
 }
 
 // WithWidth scales the button to the given width.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *ButtonWidget) WithWidth(width float32, unit string) *ButtonWidget {
-	if width > 0 {
-		wgt.width = fmt.Sprintf("width:%f%s", width, unit)
+// Pass any CSS length, e.g. "120px", "50%" or "calc(100% - 1em)". Empty clears it.
+func (wgt *ButtonWidget) WithWidth(css string) *ButtonWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}

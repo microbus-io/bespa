@@ -17,7 +17,6 @@ limitations under the License.
 package form
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -129,12 +128,11 @@ func (wgt *InputChipsWidget) WithPlaceholder(placeholder string) *InputChipsWidg
 	return wgt
 }
 
-// WithWidth sets the visible width in characters. Pass 0 (or any
-// non-positive value) to let it fill the container — the default.
-func (wgt *InputChipsWidget) WithWidth(chars int) *InputChipsWidget {
-	if chars > 0 {
-		// 20% extra character width to accommodate wider letters
-		wgt.width = fmt.Sprintf("width:%dch", chars*5/4)
+// WithWidth sets the visible width. Pass any CSS length, e.g. "16ch",
+// "200px" or "100%". Empty lets it fill the container — the default.
+func (wgt *InputChipsWidget) WithWidth(css string) *InputChipsWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}

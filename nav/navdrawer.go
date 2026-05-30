@@ -17,7 +17,6 @@ limitations under the License.
 package nav
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -67,10 +66,10 @@ func (wgt *NavDrawerWidget) AddBottom(bottomChildren ...any) *NavDrawerWidget {
 // content). Set this to 100% (or similar) so AddBottom items can stick
 // to the bottom; without it, the drawer has no spare space and bottom
 // items just trail the top section.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *NavDrawerWidget) WithHeight(height float32, unit string) *NavDrawerWidget {
-	if height > 0 {
-		wgt.height = fmt.Sprintf("height:%f%s", height, unit)
+// Pass any CSS length, e.g. "100%", "400px" or "calc(100vh - 50px)". Empty clears it.
+func (wgt *NavDrawerWidget) WithHeight(css string) *NavDrawerWidget {
+	if css != "" {
+		wgt.height = "height:" + css
 	} else {
 		wgt.height = ""
 	}

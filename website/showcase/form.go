@@ -96,7 +96,7 @@ func HandleFormInput(w http.ResponseWriter, r *http.Request) {
 		wf.Field().
 			AddLeft("Numeric OTP").
 			AddRight(
-				wf.InputOneTimePassword("otp", "").WithPattern("[0-9]*").WithLength(6, 6).WithWidth(6),
+				wf.InputOneTimePassword("otp", "").WithPattern("[0-9]*").WithLength(6, 6).WithWidth("calc(202px)"),
 			),
 		wf.Field().
 			AddLeft("Color").

@@ -17,7 +17,6 @@ limitations under the License.
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -49,12 +48,12 @@ func (f BasicFactory) Modal(name string) *ModalWidget {
 }
 
 // WithWidth sets the width of the modal window.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
+// Pass any CSS length, e.g. "826px", "90%" or "calc(100vw - 2em)". Empty clears it.
 // The default is 826px which fits 800px content internally.
 // In any case the modal will not span more than 90% of the width of the viewport.
-func (wgt *ModalWidget) WithWidth(width float32, unit string) *ModalWidget {
-	if width > 0 {
-		wgt.width = fmt.Sprintf("width:%f%s", width, unit)
+func (wgt *ModalWidget) WithWidth(css string) *ModalWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}
@@ -62,16 +61,16 @@ func (wgt *ModalWidget) WithWidth(width float32, unit string) *ModalWidget {
 }
 
 // WithMinHeight sets the minimum height of the modal window.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
+// Pass any CSS length, e.g. "240px", "50%" or "calc(100vh - 50px)".
 // The default is 240px.
-// Set to 0 to adjust the height to the content of the modal.
+// Empty adjusts the height to the content of the modal.
 // In any case the modal will not span more than 90% of the height of the viewport.
-func (wgt *ModalWidget) WithMinHeight(minHeight float32, unit string) *ModalWidget {
-	if minHeight <= 0 {
+func (wgt *ModalWidget) WithMinHeight(css string) *ModalWidget {
+	if css == "" {
 		wgt.minHeight = ""
 		return wgt
 	}
-	wgt.minHeight = fmt.Sprintf("min-height:%f%s", minHeight, unit)
+	wgt.minHeight = "min-height:" + css
 	return wgt
 }
 

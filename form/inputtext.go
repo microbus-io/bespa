@@ -199,7 +199,7 @@ func (f FormFactory) InputInteger(name string, value any) *InputTextWidget {
 	}
 	x := f.InputText(name, v)
 	x.htmlType = "number"
-	x.WithWidth(16)
+	x.WithWidth("16ch")
 	x.validators.Add(func(value string) (bool, string) {
 		_, err := strconv.ParseInt(value, 10, 64)
 		if err != nil {
@@ -224,7 +224,7 @@ func (f FormFactory) InputDecimal(name string, value any, precision int) *InputT
 	}
 	x := f.InputText(name, v)
 	x.htmlType = "number"
-	x.WithWidth(16)
+	x.WithWidth("16ch")
 	x.validators.Add(func(value string) (bool, string) {
 		_, err := strconv.ParseFloat(value, 64)
 		if err != nil {
@@ -256,7 +256,7 @@ func (f FormFactory) InputTel(name string, value string) *InputTextWidget {
 func (f FormFactory) InputRange(name string, value any) *InputTextWidget {
 	x := f.InputInteger(name, value)
 	x.htmlType = "range"
-	x.WithWidth(-1)
+	x.WithWidth("")
 	return x
 }
 
@@ -274,7 +274,7 @@ func (f FormFactory) InputPhone(name string, value string) *InputTextWidget {
 func (f FormFactory) InputColor(name string, value string) *InputTextWidget {
 	x := f.InputText(name, value)
 	x.htmlType = "color"
-	x.WithWidth(8)
+	x.WithWidth("8ch")
 	x.validators.Add(func(value string) (bool, string) {
 		if !colorRE.MatchString(value) {
 			return false, "Invalid RGB color code"
@@ -309,17 +309,12 @@ func (wgt *InputTextWidget) WithLength(minChars int, maxChars int) *InputTextWid
 	return wgt
 }
 
-// WithWidth sets the visible width of the field in characters. Pass 0
-// (or any non-positive value) to let it stretch to fill the container —
-// the default.
-func (wgt *InputTextWidget) WithWidth(chars int) *InputTextWidget {
-	if chars > 0 {
-		// Extra width to accommodate wider letters and the padding
-		wgt.width = fmt.Sprintf("width: calc(%fch + 2px)", float32(chars)+1)
-		if wgt.otp {
-			// Accommodate the letter spacing
-			wgt.width = fmt.Sprintf("width: calc(%fch + 2px + %fch)", float32(chars)+1, float32(chars)*0.5)
-		}
+// WithWidth sets the visible width of the field. Pass any CSS length,
+// e.g. "16ch", "200px" or "100%". Empty lets it stretch to fill the
+// container — the default.
+func (wgt *InputTextWidget) WithWidth(css string) *InputTextWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}

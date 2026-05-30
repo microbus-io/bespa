@@ -304,11 +304,9 @@ func (a *assets) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	// Files may be registered with sub-path keys (e.g. "maps/usa.json") so callers can
-	// group assets under a logical namespace served at /bespa/<group>/<name>. The lookup
-	// uses everything after /bespa/ as the key; legacy flat keys without slashes still
-	// match because they were always served at /bespa/<name> in the first place.
-	if key := strings.TrimPrefix(uri, "/bespa/"); key != "" && key != uri {
+	{
+		key := strings.TrimPrefix(uri, "/bespa")
+		key = strings.TrimPrefix(key, "/")
 		a.mu.RLock()
 		data, ok := a.files[key]
 		a.mu.RUnlock()

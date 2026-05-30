@@ -17,7 +17,6 @@ limitations under the License.
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -76,11 +75,11 @@ func (wgt *BannerImageWidget) WithAnchorCenter() *BannerImageWidget {
 
 // WithHeight scales the image to the given height. The width is always
 // determined by the container; only the visible vertical slice changes.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-// A non-positive height resets to the 100% default.
-func (wgt *BannerImageWidget) WithHeight(height float32, unit string) *BannerImageWidget {
-	if height > 0 {
-		wgt.height = fmt.Sprintf("%f%s", height, unit)
+// Pass any CSS length, e.g. "100px", "50%" or "calc(100vh - 50px)".
+// Empty resets to the 100% default.
+func (wgt *BannerImageWidget) WithHeight(css string) *BannerImageWidget {
+	if css != "" {
+		wgt.height = css
 	} else {
 		wgt.height = "100%"
 	}

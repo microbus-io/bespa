@@ -47,7 +47,7 @@ func HandleToolbar(w http.ResponseWriter, r *http.Request) {
 			wf.ButtonOutlined("").Add("Widgets"),
 		).AddRight(
 			wf.ButtonTonal("").Add("Right"),
-			wf.InputText("", "Aligned").WithWidth(8).WithPlaceholder("Aligned"),
+			wf.InputText("", "Aligned").WithWidth("8ch").WithPlaceholder("Aligned"),
 			wf.Dropdown("", "").AddOption("", "Widgets"),
 			wf.Icon("align horizontal right"),
 		),

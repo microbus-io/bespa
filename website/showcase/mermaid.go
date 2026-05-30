@@ -59,7 +59,7 @@ func HandleMermaid(w http.ResponseWriter, r *http.Request) {
     Review           :active, des2, 2026-05-08, 3d
     section Build
     Widgets          :        b1, after des2, 10d
-    Docs             :        b2, after b1, 5d`).WithHeight(300, "px")
+    Docs             :        b2, after b1, 5d`).WithHeight("300px")
 
 	classDiagram := wf.Mermaid(`classDiagram
     class Widget {
@@ -91,7 +91,7 @@ func HandleMermaid(w http.ResponseWriter, r *http.Request) {
     J --> K[Client]
     K --> L{Bespa-Fetch?}
     L -->|Yes| M[Swap fragments]
-    L -->|No| N[Replace page]`).WithHeight(500, "px").WithZoomPan(true)
+    L -->|No| N[Replace page]`).WithHeight("500px").WithZoomPan(true)
 
 	page := wf.Page().Add(
 		wf.AppBar("Mermaid widgets"),

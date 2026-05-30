@@ -84,12 +84,26 @@ function mermaid_renderInst(inst) {
 		inst.elem.appendChild(pre);
 		const svg = inst.elem.querySelector("svg");
 		if (svg) {
-			// Mermaid sets a fixed pixel width on the SVG that overflows narrow containers.
-			// Strip it so CSS sizing wins; the viewBox keeps the aspect ratio.
+			// Mermaid sets fixed pixel width/height attributes plus an inline
+			// max-width that together can over- or under-size the diagram.
+			// Strip them and size the SVG from its viewBox so the diagram
+			// renders at the natural dimensions of its content, with max-width
+			// capping (and aspect-preserving down-scaling) only when the
+			// container is narrower than the content.
 			svg.removeAttribute("width");
 			svg.removeAttribute("height");
-			svg.style.maxWidth = "100%";
-			svg.style.height = "100%";
+			if (inst.zoomPan) {
+				svg.style.width = "100%";
+				svg.style.height = "100%";
+				svg.style.maxWidth = "none";
+			} else {
+				const vb = svg.viewBox && svg.viewBox.baseVal;
+				if (vb && vb.width > 0 && vb.height > 0) {
+					svg.style.width = vb.width + "px";
+					svg.style.height = "auto";
+				}
+				svg.style.maxWidth = "100%";
+			}
 		}
 		if (result.bindFunctions) {
 			result.bindFunctions(inst.elem);
@@ -220,9 +234,14 @@ function mermaid_onThemeChange() {
 	}
 })();
 
-// mermaid_wireZoomPan adds wheel-to-zoom, drag-to-pan, pinch-to-zoom, and a
-// toolbar (zoom in / zoom out / reset) to the rendered SVG. State lives on
-// `inst` so it survives across re-renders.
+// mermaid_wireZoomPan adds zoom and pan to the rendered SVG. State lives on
+// `inst` so it survives across re-renders. Interactions:
+//   - Ctrl/Cmd + wheel zooms anchored at the cursor. A plain wheel is left
+//     alone so it scrolls the page (a trackpad pinch arrives as ctrl+wheel and
+//     so zooms). This "cooperative gesture" keeps the diagram from hijacking
+//     page scroll on laptops where scroll and zoom share the wheel.
+//   - Double-click zooms in toward the clicked point and recenters it.
+//   - Mouse drag (or one-finger touch) pans; two-finger touch pinch-zooms.
 //
 // Transform is applied via CSS on the <svg> element (not the SVG transform
 // attribute on an inner <g>) so the coordinate system is client pixels —
@@ -245,11 +264,16 @@ function mermaid_wireZoomPan(inst, svg) {
 		return Math.max(minScale, Math.min(maxScale, s));
 	};
 
-	// Wheel zoom anchored at the cursor. Cursor position is measured relative
-	// to the (untransformed) container — using svg.getBoundingClientRect would
-	// give a moving reference frame because the SVG itself is what we're
-	// transforming.
+	// Wheel zoom anchored at the cursor, but only while Ctrl/Cmd is held — a
+	// plain wheel falls through to scroll the page. A trackpad pinch is
+	// delivered as a wheel event with ctrlKey set, so it zooms too. Cursor
+	// position is measured relative to the (untransformed) container — using
+	// svg.getBoundingClientRect would give a moving reference frame because the
+	// SVG itself is what we're transforming.
 	svg.addEventListener("wheel", function(e) {
+		if (!e.ctrlKey && !e.metaKey) {
+			return;
+		}
 		e.preventDefault();
 		const rect = inst.elem.getBoundingClientRect();
 		const cx = e.clientX - rect.left;
@@ -332,12 +356,21 @@ function mermaid_wireZoomPan(inst, svg) {
 		}
 	});
 
-	// Double-click anywhere on the SVG resets to the original framing.
+	// Double-click zooms in a step toward the clicked point and recenters it in
+	// the viewport. The diagram point under the cursor is recovered from the
+	// current transform, then the translation is solved so that point lands at
+	// the container's center after the scale-up.
 	svg.addEventListener("dblclick", function(e) {
 		e.preventDefault();
-		inst.scale = 1;
-		inst.tx = 0;
-		inst.ty = 0;
+		const rect = inst.elem.getBoundingClientRect();
+		const cx = e.clientX - rect.left;
+		const cy = e.clientY - rect.top;
+		const px = (cx - inst.tx) / inst.scale;
+		const py = (cy - inst.ty) / inst.scale;
+		const newScale = clamp(inst.scale * 1.6);
+		inst.tx = rect.width / 2 - px * newScale;
+		inst.ty = rect.height / 2 - py * newScale;
+		inst.scale = newScale;
 		apply();
 	});
 }

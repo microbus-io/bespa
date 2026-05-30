@@ -21,8 +21,7 @@ limitations under the License.
 	min-width: 0;
 	max-width: 100%;
 	width: 100%;
-	height: 400px;
-	overflow: hidden;
+	height: auto;
 	position: relative;
 	display: flex;
 	align-items: center;
@@ -30,7 +29,7 @@ limitations under the License.
 }
 .Mermaid > .MermaidCanvas svg {
 	max-width: 100%;
-	height: 100%;
+	height: auto;
 }
 .Mermaid > .MermaidCanvas.MermaidAlignLeft {
 	justify-content: flex-start;
@@ -45,6 +44,10 @@ limitations under the License.
 	color: rgb(var(--md-sys-color-error));
 	font-family: var(--md-sys-typescale-body-medium-font);
 	padding: 1em;
+}
+.Mermaid > .MermaidCanvasZoomPan {
+	height: 400px;
+	overflow: hidden;
 }
 .Mermaid > .MermaidCanvasZoomPan svg {
 	max-width: none;

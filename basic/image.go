@@ -17,7 +17,6 @@ limitations under the License.
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -54,9 +53,9 @@ func (wgt *ImageWidget) WithAltText(altText string) *ImageWidget {
 // WithWidth scales the image to the given width.
 // Unless explicitly set, the height is adjusted to maintain the aspect ratio.
 // Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *ImageWidget) WithWidth(width float32, unit string) *ImageWidget {
-	if width > 0 {
-		wgt.width = fmt.Sprintf("width:%f%s", width, unit)
+func (wgt *ImageWidget) WithWidth(css string) *ImageWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}
@@ -66,9 +65,9 @@ func (wgt *ImageWidget) WithWidth(width float32, unit string) *ImageWidget {
 // WithHeight scales the image to the given height.
 // Unless explicitly set, the width is adjusted to maintain the aspect ratio.
 // Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *ImageWidget) WithHeight(height float32, unit string) *ImageWidget {
-	if height > 0 {
-		wgt.height = fmt.Sprintf("height:%f%s", height, unit)
+func (wgt *ImageWidget) WithHeight(css string) *ImageWidget {
+	if css != "" {
+		wgt.height = "height:" + css
 	} else {
 		wgt.height = ""
 	}

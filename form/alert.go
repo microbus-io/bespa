@@ -103,16 +103,16 @@ func (wgt *AlertWidget) createModal() {
 		)
 	}
 	wgt.modal = factory.Modal(wgt.name).
-		WithWidth(450, "px").
-		WithMinHeight(1, "px").
+		WithWidth("450px").
+		WithMinHeight("1px").
 		Add(body)
 }
 
 // WithWidth sets the width of the alert window.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
+// Pass any CSS length, e.g. "450px", "90%" or "calc(100vw - 2em)". Empty clears it.
 // The default is 450px.
-func (wgt *AlertWidget) WithWidth(width float32, unit string) *AlertWidget {
-	wgt.modal.WithWidth(width, unit)
+func (wgt *AlertWidget) WithWidth(css string) *AlertWidget {
+	wgt.modal.WithWidth(css)
 	return wgt
 }
 

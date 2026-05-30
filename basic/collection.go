@@ -17,7 +17,6 @@ limitations under the License.
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -58,11 +57,11 @@ func (f BasicFactory) Block(children ...any) *CollectionWidget {
 	return x
 }
 
-// WithWidth sets an explicit width. Pass 0 to clear.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *CollectionWidget) WithWidth(width float32, unit string) *CollectionWidget {
-	if width > 0 {
-		wgt.width = fmt.Sprintf("width:%f%s", width, unit)
+// WithWidth sets an explicit width. Empty clears it.
+// Pass any CSS length, e.g. "400px", "100%" or "calc(100vw - 2em)".
+func (wgt *CollectionWidget) WithWidth(css string) *CollectionWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}
@@ -70,11 +69,11 @@ func (wgt *CollectionWidget) WithWidth(width float32, unit string) *CollectionWi
 }
 
 // WithMaxWidth caps the width while allowing the content to be narrower.
-// Pass 0 to clear.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *CollectionWidget) WithMaxWidth(width float32, unit string) *CollectionWidget {
-	if width > 0 {
-		wgt.maxWidth = fmt.Sprintf("max-width:%f%s", width, unit)
+// Empty clears it.
+// Pass any CSS length, e.g. "400px", "80%" or "calc(100vw - 2em)".
+func (wgt *CollectionWidget) WithMaxWidth(css string) *CollectionWidget {
+	if css != "" {
+		wgt.maxWidth = "max-width:" + css
 	} else {
 		wgt.maxWidth = ""
 	}

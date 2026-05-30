@@ -173,6 +173,11 @@ func (f WidgetFactory) Float(flt float64, precision int) *BytesWidget {
 	return f.Text(message.NewPrinter(language.English).Sprintf("%.0"+strconv.Itoa(precision)+"f", flt))
 }
 
+// Nbsp creates a new widget that renders a non-breaking space "&nbsp;" to the page.
+func (f WidgetFactory) Nbsp() *BytesWidget {
+	return f.Bytes([]byte("&nbsp;"))
+}
+
 // Void creates a new widget that does nothing.
 func (f WidgetFactory) Void() *BytesWidget {
 	return f.Bytes([]byte{})

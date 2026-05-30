@@ -17,7 +17,6 @@ limitations under the License.
 package basic
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -95,10 +94,10 @@ func (wgt *ProgressWidget) WithRefreshInterval(interval time.Duration) *Progress
 }
 
 // WithWidth sets the width of the progress bar.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *ProgressWidget) WithWidth(width float32, unit string) *ProgressWidget {
-	if width > 0 {
-		wgt.width = fmt.Sprintf("width:%f%s", width, unit)
+// Pass any CSS length, e.g. "200px", "100%" or "calc(100% - 1em)". Empty clears it.
+func (wgt *ProgressWidget) WithWidth(css string) *ProgressWidget {
+	if css != "" {
+		wgt.width = "width:" + css
 	} else {
 		wgt.width = ""
 	}
@@ -106,10 +105,10 @@ func (wgt *ProgressWidget) WithWidth(width float32, unit string) *ProgressWidget
 }
 
 // WithHeight sets the height of the progress bar.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *ProgressWidget) WithHeight(height float32, unit string) *ProgressWidget {
-	if height > 0 {
-		wgt.height = fmt.Sprintf("height:%f%s", height, unit)
+// Pass any CSS length, e.g. "8px", "1em". Empty clears it.
+func (wgt *ProgressWidget) WithHeight(css string) *ProgressWidget {
+	if css != "" {
+		wgt.height = "height:" + css
 	} else {
 		wgt.height = ""
 	}

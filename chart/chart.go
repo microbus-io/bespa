@@ -18,7 +18,6 @@ package chart
 
 import (
 	"bytes"
-	"fmt"
 	"html/template"
 	"io"
 	"net/http"
@@ -36,7 +35,7 @@ type ChartWidget struct {
 	configTemplate string
 	data           any
 	svg            bool
-	height         int
+	height         string
 }
 
 /*
@@ -79,11 +78,11 @@ func (wgt *ChartWidget) AsSVG(svg bool) *ChartWidget {
 	return wgt
 }
 
-// WithHeight sets the chart container's height in pixels.
-// The default (set via CSS) is 400px. Non-positive values fall back to
-// the CSS default.
-func (wgt *ChartWidget) WithHeight(pixels int) *ChartWidget {
-	wgt.height = pixels
+// WithHeight sets the chart container's height.
+// Pass any CSS length, e.g. "400px", "100%" or "calc(100vh - 50px)".
+// The default (set via CSS) is 400px. Empty falls back to the CSS default.
+func (wgt *ChartWidget) WithHeight(css string) *ChartWidget {
+	wgt.height = css
 	return wgt
 }
 
@@ -112,8 +111,8 @@ func (wgt *ChartWidget) Draw(w io.Writer, r *http.Request) (err error) {
 		renderer = "svg"
 	}
 	heightStyle := ""
-	if wgt.height > 0 {
-		heightStyle = fmt.Sprintf("height:%dpx", wgt.height)
+	if wgt.height != "" {
+		heightStyle = "height:" + wgt.height
 	}
 	return Tag("div").
 		Class("Chart", "Block").

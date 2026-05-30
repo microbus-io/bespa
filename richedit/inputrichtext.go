@@ -82,12 +82,12 @@ func (f RichEditFactory) InputRichText(name string, value string) *InputRichText
 	return x
 }
 
-// WithWidth caps the editor's width in characters (max-width). Pass 0
-// (or any non-positive value) to let it fill the container — the default.
-func (wgt *InputRichTextWidget) WithWidth(chars int) *InputRichTextWidget {
-	if chars > 0 {
-		// 20% extra character width to accommodate wider letters
-		wgt.width = fmt.Sprintf("max-width:%dch", chars*5/4)
+// WithWidth caps the editor's width (max-width). Pass any CSS length,
+// e.g. "60ch", "800px" or "100%". Empty lets it fill the container — the
+// default.
+func (wgt *InputRichTextWidget) WithWidth(css string) *InputRichTextWidget {
+	if css != "" {
+		wgt.width = "max-width:" + css
 	} else {
 		wgt.width = ""
 	}

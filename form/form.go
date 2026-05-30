@@ -17,7 +17,6 @@ limitations under the License.
 package form
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -113,11 +112,11 @@ func (wgt *FormWidget) WithAutoComplete(autoComplete string) *FormWidget {
 }
 
 // WithWidth caps the form's max-width. Default is 800px; the form still
-// compresses below 600px regardless. Pass 0 to clear the cap.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *FormWidget) WithWidth(width float32, unit string) *FormWidget {
-	if width > 0 {
-		wgt.width = fmt.Sprintf("max-width:%f%s", width, unit)
+// compresses below 600px regardless. Empty clears the cap.
+// Pass any CSS length, e.g. "800px", "90%" or "calc(100vw - 2em)".
+func (wgt *FormWidget) WithWidth(css string) *FormWidget {
+	if css != "" {
+		wgt.width = "max-width:" + css
 	} else {
 		wgt.width = ""
 	}

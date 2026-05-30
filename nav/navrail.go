@@ -46,10 +46,10 @@ func (f NavFactory) NavRail() *NavRailWidget {
 
 // WithHeight pins the rail to a fixed height. Default is auto (fits
 // content). Required if you want AddBottom items to stick to the bottom.
-// Allowed CSS units are "px", "%", "ch", "em", "vw", "vh", etc.
-func (wgt *NavRailWidget) WithHeight(height float32, units string) *NavRailWidget {
-	if height > 0 {
-		wgt.height = fmt.Sprintf("height:%.2f%s", height, units)
+// Pass any CSS length, e.g. "100%", "400px" or "calc(100vh - 50px)". Empty clears it.
+func (wgt *NavRailWidget) WithHeight(css string) *NavRailWidget {
+	if css != "" {
+		wgt.height = "height:" + css
 	} else {
 		wgt.height = ""
 	}

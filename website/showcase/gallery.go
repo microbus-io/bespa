@@ -66,7 +66,7 @@ func HandleDeck(w http.ResponseWriter, r *http.Request) {
 	for i := 0; i < len(states); i++ {
 		abbrev := strings.ToLower(states[i].Abbrev)
 		card := wf.CardFilled().Add(
-			wf.BannerImage("/images/stateflags/"+abbrev+".webp").WithHeight(100, "px"),
+			wf.BannerImage("/images/stateflags/"+abbrev+".webp").WithHeight("100px"),
 			wf.TitleMedium(states[i].Name),
 			"Population: ", states[i].Population, wf.SpacerNewLine(),
 			"Land: ", states[i].Land,
