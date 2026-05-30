@@ -56,8 +56,12 @@ func main() {
 	build.Init(mux.ServeMux)
 	extend.Init(mux.ServeMux)
 
-	fmt.Printf("Starting server at port 8080\n")
-	if err := http.ListenAndServe(":8080", mux); err != nil {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	fmt.Printf("Starting server at port %s\n", port)
+	if err := http.ListenAndServe(":"+port, mux); err != nil {
 		fmt.Printf("%+v\n", err)
 		os.Exit(1)
 	}
