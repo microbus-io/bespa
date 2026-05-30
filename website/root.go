@@ -156,6 +156,13 @@ func HandleRoot(w http.ResponseWriter, r *http.Request) {
 				"Light and dark themes work without you writing a line of CSS.",
 			),
 			wf.CardOutlined().Add(
+				wf.TitleLarge(wf.Icon("devices"), " Responsive design"),
+				wf.Spacer(0.25),
+				"Layouts adapt to the viewport out of the box — decks reflow, navigation collapses, ",
+				"and touch targets stay comfortable. The same app works on phones, tablets, and desktops ",
+				"without a separate mobile build.",
+			),
+			wf.CardOutlined().Add(
 				wf.TitleLarge(wf.Icon("bolt"), " Tiny client runtime"),
 				wf.Spacer(0.25),
 				"The total JavaScript needed to run a BESPA app is in the kilobytes, ",
