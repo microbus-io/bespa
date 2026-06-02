@@ -31,11 +31,13 @@ limitations under the License.
 	flex-basis: 150px;
 	flex-grow: 1;
 	max-width: 100%;
+	min-width: 0;
 }
 .Field > DIV:last-child {
 	flex-basis: 450px;
 	flex-grow: 9;
 	max-width: 100%;
+	min-width: 0;
 }
 .Field > DIV:first-child A {
 	color: inherit;

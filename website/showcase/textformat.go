@@ -79,6 +79,15 @@ func HandleTextFormatting(w http.ResponseWriter, r *http.Request) {
 		"Lorem Ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 		"Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 		wf.SpacerParagraph(),
+		"Short value: ", wf.Code("api-key-7f3c2"), " ", wf.CopyToClipboard("api-key-7f3c2"),
+		wf.SpacerNewLine(),
+		"Long value ", wf.CopyToClipboard(`package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello, World!")
+}`).WithAltText("Copy code"),
 		wf.PlainCodeBlock(`package main
 
 import "fmt"
