@@ -21,8 +21,15 @@ function progress_start(id) {
     if (!refresh) {
         return;
     }
-    const interval = elem.getAttribute("data-interval");
-    const timeoutID = window.setInterval(async function() {
+    const interval = Number(elem.getAttribute("data-interval"));
+    async function tick() {
+        // When a page-level redraw replaces this widget's DOM (e.g. status.action
+        // fired and the new render no longer includes the progress widget), the
+        // old elem is detached. Stop the loop here so we don't poll forever from
+        // a dead DOM subtree and stack up parallel loops across redraws.
+        if (!document.contains(elem)) {
+            return;
+        }
         let status = {
             value: 0,
             stop: false,
@@ -38,20 +45,27 @@ function progress_start(id) {
         if (status.value>=0) {
             progress.setAttribute("value", status.value);
             elem.classList.remove("Infinite");
-            if (progress.value>=progress.max || status.stop) {
-                window.clearInterval(timeoutID);
-            }
-            if (status.action) {
-                const clickEvent = new Event('click', {
-                    bubbles: true,
-                    cancelable: true,
-                });
-                elem.lastChild.setAttribute("href", status.action);
-                elem.lastChild.dispatchEvent(clickEvent);
-            }
         } else {
             progress.removeAttribute("value");
             elem.classList.add("Infinite");
         }
-    }, interval);
+        const stopped = (status.value>=0 && progress.value>=progress.max) || status.stop;
+        if (status.action) {
+            const clickEvent = new Event('click', {
+                bubbles: true,
+                cancelable: true,
+            });
+            elem.lastChild.setAttribute("href", status.action);
+            elem.lastChild.dispatchEvent(clickEvent);
+        }
+        if (stopped) {
+            return;
+        }
+        // Chained setTimeout — the next fetch waits for the current response
+        // to land plus the interval. Lets long-poll endpoints hold the
+        // connection without piling up parallel fetches, and lets short-poll
+        // endpoints reconnect promptly after each result.
+        window.setTimeout(tick, interval);
+    }
+    window.setTimeout(tick, interval);
 }

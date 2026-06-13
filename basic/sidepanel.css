@@ -35,7 +35,7 @@ limitations under the License.
 }
 .SidePanel > DIV {
 	cursor: initial;
-	user-select: initial;
+	user-select: text;
 	padding: 0 16px;
 	height: fit-content;
 	min-height: 100%;
