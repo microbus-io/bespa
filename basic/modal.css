@@ -20,6 +20,7 @@ limitations under the License.
 	top: 0;
 	width: 100vw;
 	height: 100vh;
+	height: 100dvh;
 	overflow: auto;
 	background-color: rgba(var(--md-sys-color-scrim), .5);
 	backdrop-filter: blur(3px);
@@ -27,10 +28,10 @@ limitations under the License.
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	height: -webkit-fill-available;
 
 	animation-name: ModalShowBackdrop;
-	animation-duration: 0.5s;
+	animation-duration: 0.25s;
+	animation-fill-mode: backwards;
 }
 .Modal > DIV {
 	background-color: rgb(var(--md-sys-color-background));
@@ -39,6 +40,7 @@ limitations under the License.
 	min-height: 240px;
 	max-width: calc(100vw - 4ch);
 	max-height: calc(100vh - 96px);
+	max-height: calc(100dvh - 96px);
 	box-shadow: var(--md-sys-elevation-level5-shadow);
 	border-radius: 24px;
 	overflow-x: hidden;
@@ -48,17 +50,51 @@ limitations under the License.
 	padding: 0 16px;
 
 	animation-name: ModalShow;
-	animation-duration: 0.15s;
+	animation-duration: 0.25s;
+	animation-fill-mode: backwards;
+}
+.Modal.ExitAnimation {
+	animation-name: ModalHideBackdrop;
+	animation-duration: 0.25s;
+	animation-fill-mode: forwards;
+}
+.Modal.ExitAnimation > DIV {
+	animation-name: ModalHide;
+	animation-duration: 0.25s;
+	animation-fill-mode: forwards;
 }
 @media only screen and (max-width: 600px) {
 	.Modal {
 		align-items: end;
+		background-color: transparent;
+		backdrop-filter: none;
+		animation-name: none;
+	}
+	.Modal::before {
+		content: "";
+		position: fixed;
+		inset: 0;
+		background-color: rgba(var(--md-sys-color-scrim), .5);
+		backdrop-filter: blur(3px);
+	}
+	.Modal.ExitAnimation {
+		animation-name: none;
+	}
+	.Modal.ExitAnimation::before {
+		display: none;
 	}
 	.Modal > DIV {
 		border-radius: 24px 24px 0 0;
-		max-width: calc(100vw - 16px);
+		width: 100vw;
+		max-width: 100vw;
+		border-left: 0px;
+		border-right: 0px;
 		border-bottom: 0px;
 		margin: 48px auto 0 auto;
+		animation-name: ModalShowMobile;
+	}
+	.Modal.ExitAnimation > DIV {
+		animation-name: ModalHideMobile;
 	}
 }
 .Modal > DIV > .Embed > .Page > .AppBar {
@@ -73,6 +109,22 @@ limitations under the License.
 	to {top: 0;}
 }
 @keyframes ModalShowBackdrop {
-	from {background-color: rgba(var(--md-sys-color-scrim), 0)}
-	to {background-color: rgba(var(--md-sys-color-scrim), .5);}
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+@keyframes ModalHide {
+	from {top: 0;}
+	to {top: 48px;}
+}
+@keyframes ModalHideBackdrop {
+	from {opacity: 1;}
+	to {opacity: 0;}
+}
+@keyframes ModalShowMobile {
+	from {transform: translateY(100%);}
+	to {transform: translateY(0);}
+}
+@keyframes ModalHideMobile {
+	from {transform: translateY(0);}
+	to {transform: translateY(100%);}
 }

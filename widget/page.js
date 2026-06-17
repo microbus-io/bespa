@@ -362,12 +362,14 @@ function page_applyRedrawnElements(page, elems) {
 			for (const oldElem of oldElems) {
 				if (page_parentPage(oldElem)===page) {
 					const newElem = elem;
-					oldElem.parentElement.replaceChild(newElem, oldElem);
-					page_observeSwap(oldElem, newElem);
-					const scripts = newElem.querySelectorAll("SCRIPT");
-					for (const s of scripts) {
-						eval(s.innerText);
+					// When an element is being replaced by its hidden/closed
+					// placeholder, give it a chance to animate out first. The
+					// opt-in is pure CSS: define an .ExitAnimation rule.
+					const hidden = newElem.classList.contains("Empty") || newElem.style.display==="none";
+					if (hidden && page_animateExit(oldElem, newElem)) {
+						continue;
 					}
+					page_swapElement(oldElem, newElem);
 					if (!autoFocus?.length) {
 						autoFocus = newElem.querySelectorAll('[autofocus="1"');
 					}
@@ -408,6 +410,58 @@ function page_initObserver() {
 	for (const o of observed) {
 		page_resizeObserver.observe(o, {box: "border-box"});
 	}
+}
+
+// page_swapElement replaces oldElem with newElem, rewires width observers and
+// runs any <script> the new element carries (e.g. a modal's close cleanup).
+function page_swapElement(oldElem, newElem) {
+	oldElem.parentElement.replaceChild(newElem, oldElem);
+	page_observeSwap(oldElem, newElem);
+	const scripts = newElem.querySelectorAll("SCRIPT");
+	for (const s of scripts) {
+		eval(s.innerText);
+	}
+}
+
+// page_animateExit plays a CSS exit animation on an element that is being
+// hidden (replaced by its placeholder) before swapping it out. Opt-in is pure
+// CSS: a widget defines an ".ExitAnimation" rule whose animation differs from
+// the element's resting state. We detect that by checking whether adding the
+// class actually changes the computed animation-name; if it doesn't, there is
+// no exit animation and we report false so the caller swaps immediately.
+// Returns true if it took over the (deferred) swap. A timeout fallback
+// guarantees the swap still happens if "animationend" never fires.
+function page_animateExit(oldElem, placeholder) {
+	// Signature of the animation-names on the element and its direct children, so
+	// we detect an exit animation defined on either (e.g. a modal whose scrim is
+	// static but whose sheet slides out). animationend bubbles, so a child's
+	// animation still drives the deferred swap below.
+	const sig = function() {
+		let s = getComputedStyle(oldElem).animationName;
+		for (let i = 0; i < oldElem.children.length; i++) {
+			s += "|" + getComputedStyle(oldElem.children[i]).animationName;
+		}
+		return s;
+	};
+	const before = sig();
+	oldElem.classList.add("ExitAnimation");
+	if (sig()===before) {
+		oldElem.classList.remove("ExitAnimation");
+		return false;
+	}
+	let swapped = false;
+	const finish = function() {
+		if (swapped) {
+			return;
+		}
+		swapped = true;
+		if (oldElem.parentElement) {
+			page_swapElement(oldElem, placeholder);
+		}
+	};
+	oldElem.addEventListener("animationend", finish, {once: true});
+	setTimeout(finish, 1000);
+	return true;
 }
 
 function page_observeSwap(oldElem, newElem) {

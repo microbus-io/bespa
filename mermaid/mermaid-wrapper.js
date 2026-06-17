@@ -14,15 +14,46 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// The official mermaid bundle exposes itself on the IIFE we wrapped it in.
-// jsdelivr's "production" build is namespaced as __esbuild_esm_mermaid_nm.mermaid;
-// pluck a stable `mermaid` global out so the rest of this file can ignore that.
-(function() {
-	if (typeof mermaid !== "undefined") {
-		return;
+// mermaid_lib resolves the mermaid API. The mermaid runtime loads as a separate
+// <script> after the bundle that contains this wrapper, so resolve lazily (and
+// cache onto window.mermaid). The esbuild bundle exposes the module namespace at
+// __esbuild_esm_mermaid_nm.mermaid; the real singleton is its default export, so
+// prefer that — using a single object for initialize()/render() keeps them on
+// the same config. Returns null if the runtime isn't available yet.
+function mermaid_lib() {
+	if (typeof mermaid !== "undefined" && mermaid && mermaid.render) {
+		return mermaid;
 	}
 	if (typeof __esbuild_esm_mermaid_nm !== "undefined" && __esbuild_esm_mermaid_nm.mermaid) {
-		window.mermaid = __esbuild_esm_mermaid_nm.mermaid;
+		const ns = __esbuild_esm_mermaid_nm.mermaid;
+		window.mermaid = (ns.default && ns.default.render) ? ns.default : ns;
+		return window.mermaid;
+	}
+	return null;
+}
+
+// Mermaid defaults to startOnLoad:true and, on the window "load" event, auto-
+// renders elements it matches using its default config. For our widgets that is
+// actively harmful: it reads an element's textContent as the diagram source,
+// which includes our inline <script> text, producing "Syntax error" bombs — and
+// it clobbers our own themed, controlled rendering and stamps data-processed on
+// the element. Disable it as soon as the runtime is available. Returns true once
+// done so the caller can stop polling.
+function mermaid_disableStartOnLoad() {
+	const m = mermaid_lib();
+	if (m) {
+		m.initialize({startOnLoad: false});
+		return true;
+	}
+	return false;
+}
+
+// Belt: poll until the runtime loads (it's a separate <script> after this one).
+// Suspenders: the inline mermaid_render() calls below also disable it, and they
+// run during body parse — comfortably before the window "load" event fires.
+(function mermaid_pollDisable() {
+	if (!mermaid_disableStartOnLoad()) {
+		window.setTimeout(mermaid_pollDisable, 5);
 	}
 })();
 
@@ -40,6 +71,9 @@ function mermaid_nextID() {
 // MermaidWidget.Draw. `id` is the container element id, `zoomPan` is 1 to wire
 // up zoom/pan interactions or 0 to leave the diagram static.
 function mermaid_render(id, zoomPan) {
+	// Runs during body parse (mermaid.js already loaded, before window "load"):
+	// the reliable moment to disable mermaid's auto-run before it can fire.
+	mermaid_disableStartOnLoad();
 	window.setTimeout(function() {
 		const elem = document.getElementById(id);
 		if (!elem) {
@@ -51,31 +85,56 @@ function mermaid_render(id, zoomPan) {
 			elem: elem,
 			source: source,
 			zoomPan: !!zoomPan,
+			rendered: false,
 			scale: 1, tx: 0, ty: 0,
 		};
 		mermaid_instances.push(inst);
-		mermaid_renderInst(inst);
+		mermaid_lazyRender(inst);
 	}, 1);
 }
 
-// mermaid_renderInst runs mermaid against `inst.source` and swaps the resulting
-// SVG into `inst.elem`. Called once on creation and again on every theme switch.
+// mermaid_lazyRender defers a diagram's render until it scrolls near the
+// viewport. Each render is heavy and runs synchronously on the main thread, so
+// rendering a page/modal full of diagrams up front freezes the UI (an
+// unresponsive close button while everything lays out). Rendering only what's
+// visible keeps interaction snappy. Falls back to immediate render where
+// IntersectionObserver is unavailable.
+function mermaid_lazyRender(inst) {
+	if (typeof IntersectionObserver === "undefined") {
+		mermaid_renderInst(inst);
+		return;
+	}
+	const obs = new IntersectionObserver(function(entries) {
+		for (const entry of entries) {
+			if (entry.isIntersecting) {
+				obs.disconnect();
+				mermaid_renderInst(inst);
+				return;
+			}
+		}
+	}, {rootMargin: "200px"});
+	obs.observe(inst.elem);
+}
+
+// mermaid_renderInst renders one diagram and swaps the SVG into its container.
+// Called when the diagram scrolls into view and again on every theme switch.
 function mermaid_renderInst(inst) {
 	if (!inst.elem.isConnected) {
 		return;
 	}
-	if (typeof mermaid === "undefined") {
-		// Library hasn't loaded yet — try again in a moment. The bundle is async-fetched
-		// on the first page that imports the mermaid package.
+	const m = mermaid_lib();
+	if (!m) {
+		// Runtime <script> hasn't loaded yet — wait and retry.
 		window.setTimeout(function() { mermaid_renderInst(inst); }, 50);
 		return;
 	}
-	mermaid.initialize(mermaid_buildConfig());
+	m.initialize(mermaid_buildConfig());
 	const svgID = mermaid_nextID();
-	mermaid.render(svgID, inst.source).then(function(result) {
+	m.render(svgID, inst.source).then(function(result) {
 		if (!inst.elem.isConnected) {
 			return;
 		}
+		inst.rendered = true;
 		inst.elem.innerHTML = result.svg;
 		// Re-add the (hidden) source so subsequent re-renders find the diagram text.
 		const pre = document.createElement("pre");
@@ -85,11 +144,10 @@ function mermaid_renderInst(inst) {
 		const svg = inst.elem.querySelector("svg");
 		if (svg) {
 			// Mermaid sets fixed pixel width/height attributes plus an inline
-			// max-width that together can over- or under-size the diagram.
-			// Strip them and size the SVG from its viewBox so the diagram
-			// renders at the natural dimensions of its content, with max-width
-			// capping (and aspect-preserving down-scaling) only when the
-			// container is narrower than the content.
+			// max-width that together can over- or under-size the diagram. Strip
+			// them and size the SVG from its viewBox so it renders at the natural
+			// dimensions of its content, with max-width capping (and aspect-
+			// preserving down-scaling) only when the container is narrower.
 			svg.removeAttribute("width");
 			svg.removeAttribute("height");
 			if (inst.zoomPan) {
@@ -112,8 +170,32 @@ function mermaid_renderInst(inst) {
 			mermaid_wireZoomPan(inst, svg);
 		}
 	}).catch(function(err) {
-		inst.elem.innerHTML = '<div class="MermaidError">Diagram error: ' + (err && err.message ? err.message : String(err)) + '</div>';
+		mermaid_showError(inst, (err && err.message) ? err.message : String(err), inst.source);
 	});
+}
+
+// mermaid_showError renders a readable failure into the diagram's container,
+// including the first non-blank line of the source so it can be diagnosed at a
+// glance (vs. mermaid's opaque error diagram).
+function mermaid_showError(inst, msg, source) {
+	console.error("[mermaid] render failed:", msg);
+	if (!inst.elem.isConnected) {
+		return;
+	}
+	const lines = String(source || "").split("\n");
+	let firstLine = "";
+	for (const l of lines) {
+		if (l.trim() !== "") {
+			firstLine = l.trim();
+			break;
+		}
+	}
+	inst.elem.innerHTML = '<div class="MermaidError">Diagram error: ' + mermaid_escape(msg) +
+		'<br><small>source: ' + mermaid_escape(firstLine.slice(0, 140)) + '</small></div>';
+}
+
+function mermaid_escape(s) {
+	return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
 // mermaid_cssVar reads a raw CSS custom property value off the document root.
@@ -163,6 +245,7 @@ function mermaid_buildConfig() {
 	return {
 		startOnLoad: false,
 		securityLevel: "strict",
+		suppressErrorRendering: true,
 		theme: "base",
 		fontFamily: fontFamily,
 		themeVariables: {
@@ -203,6 +286,11 @@ function mermaid_onThemeChange() {
 		}
 	}
 	for (const inst of mermaid_instances) {
+		// Skip diagrams not yet rendered (still waiting to scroll into view);
+		// they'll pick up the current theme when they first render.
+		if (!inst.rendered) {
+			continue;
+		}
 		inst.scale = 1;
 		inst.tx = 0;
 		inst.ty = 0;

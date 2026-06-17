@@ -20,6 +20,7 @@ limitations under the License.
 	top: 0;
 	right: 0;
 	height: 100vh;
+	height: 100dvh;
 	padding-left: 4px;
 	/*width*/
 	cursor: ew-resize;
@@ -31,7 +32,7 @@ limitations under the License.
 	align-items: stretch;
 
 	animation-name: SidePanelShow;
-	animation-duration: 0.15s;
+	animation-duration: 0.25s;
 }
 .SidePanel > DIV {
 	cursor: initial;
@@ -47,6 +48,41 @@ limitations under the License.
 }
 
 @keyframes SidePanelShow {
-	from {right: -48px;}
-	to {right: 0;}
+	from {right: -48px; opacity: 0;}
+	to {right: 0; opacity: 1;}
+}
+.SidePanel.ExitAnimation {
+	animation-name: SidePanelHide;
+	animation-fill-mode: forwards;
+}
+@keyframes SidePanelHide {
+	from {right: 0; opacity: 1;}
+	to {right: -48px; opacity: 0;}
+}
+
+@media only screen and (max-width: 600px) {
+	.SidePanel {
+		width: 100vw !important;
+		max-width: 100vw;
+		min-width: 100vw;
+		padding-left: 0;
+		cursor: initial;
+		overscroll-behavior: contain;
+		animation-name: SidePanelShowMobile;
+		background-color: rgb(var(--md-sys-color-background));
+	}
+	.SidePanel.ExitAnimation {
+		animation-name: SidePanelHideMobile;
+	}
+	.SidePanel > DIV {
+		border-left: 0px;
+	}
+}
+@keyframes SidePanelShowMobile {
+	from {transform: translateX(100%);}
+	to {transform: translateX(0);}
+}
+@keyframes SidePanelHideMobile {
+	from {transform: translateX(0);}
+	to {transform: translateX(100%);}
 }

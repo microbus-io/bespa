@@ -106,6 +106,7 @@ func (wgt *ModalWidget) Draw(w io.Writer, r *http.Request) (err error) {
 		Attr("id", randomID).
 		Attr("role", "dialog").
 		Attr("aria-modal", "true").
+		Attr("onclick", "modal_scrim(event, '"+wgt.name+"')").
 		Class("Modal").
 		Add(
 			Tag("div").

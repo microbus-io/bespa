@@ -14,6 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// modal_scrim closes the modal when its backdrop (not the sheet content) is
+// clicked. The modal is bound to a state variable; clearing it on the owning page
+// closes the modal — the same effect as the AppBar's "<-" button.
+function modal_scrim(event, name) {
+	if (event.target !== event.currentTarget) {
+		return;
+	}
+	const page = page_parentPage(event.currentTarget);
+	const params = new URLSearchParams();
+	params.set(name, "");
+	page_nav(page, "GET", "?" + name + "=", params, null);
+}
+
 function modal_open(id) {
 	const modal = document.getElementById(id);
 	const page = page_parentPage(modal);

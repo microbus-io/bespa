@@ -116,7 +116,7 @@ limitations under the License.
 	left: -100vw;
 	height: 100vh;
 	width: 100vw;
-	transition: background-color 0.5s;
+	transition: background-color 0.25s;
 }
 .MainMenu > .Backdrop.On {
 	background-color: rgba(var(--md-sys-color-scrim), .5);
