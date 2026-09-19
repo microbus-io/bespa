@@ -17,6 +17,7 @@ limitations under the License.
 package main
 
 import (
+	_ "embed"
 	"net/http"
 	"path/filepath"
 	"strconv"
@@ -25,6 +26,9 @@ import (
 	"github.com/microbus-io/bespa/website/resources"
 	"github.com/microbus-io/bespa/website/shared"
 )
+
+//go:embed robots.txt
+var robotsTxt []byte
 
 // --- Code samples shown on the landing page ---------------------------------
 // Kept as top-level consts so they stay alongside HandleRoot but don't clutter
@@ -336,6 +340,17 @@ func HandleTryCounter(w http.ResponseWriter, r *http.Request) {
 		),
 	)
 	shared.Render(w, r, page)
+}
+
+// HandleRobotsTxt serves /robots.txt. It disallows the CRUD showcase demo
+// (/showcase/dir-list and /showcase/dir-edit), whose links embed fresh
+// randomized query strings on every render — crawlers that follow them
+// recursively treat each render as a newly discovered page, which turned
+// into an unbounded crawl loop against Meta's meta-externalagent bot.
+func HandleRobotsTxt(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Header().Set("Cache-Control", "public, max-age=3600")
+	w.Write(robotsTxt)
 }
 
 // HandleImages serves an image from the resources directory.

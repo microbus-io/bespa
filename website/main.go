@@ -46,6 +46,7 @@ func main() {
 	mux.HandleFunc("/images/", HandleImages)                  // Trailing slash
 	mux.HandleFunc("/", HandleRoot)
 	mux.HandleFunc("/llms.txt", HandleLLMs)
+	mux.HandleFunc("/robots.txt", HandleRobotsTxt)
 	mux.HandleFunc("/start", HandleStart)
 	mux.HandleFunc("/profile", HandleProfile)
 	mux.HandleFunc("/contact", HandleFindUs)
