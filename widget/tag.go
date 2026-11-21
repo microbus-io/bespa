@@ -20,7 +20,9 @@ import (
 	"bytes"
 	"html"
 	"io"
+	"maps"
 	"net/http"
+	"slices"
 	"strings"
 
 	"github.com/microbus-io/errors"
@@ -191,11 +193,11 @@ func (tag *TagWidget) Draw(w io.Writer, r *http.Request) (err error) {
 	}
 	tag.write(w, "<")
 	tag.write(w, html.EscapeString(tag.name))
-	for k, v := range tag.attributes {
+	for _, k := range slices.Sorted(maps.Keys(tag.attributes)) {
 		tag.write(w, " ")
 		tag.write(w, html.EscapeString(k))
 		tag.write(w, `="`)
-		tag.write(w, html.EscapeString(v))
+		tag.write(w, html.EscapeString(tag.attributes[k]))
 		tag.write(w, `"`)
 	}
 	tag.write(w, ">")
